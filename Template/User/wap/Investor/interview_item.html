@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <title>我约谈的项目 - <Zml:title /></title>
+    <meta name="keywords" content="<Zml:keywords />"/>
+    <meta name="description" content="<Zml:description />"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+    <script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+    <script src="__PUBLIC__/js/pintuer.js"></script>
+    <script src="__PUBLIC__/js/respond.js"></script>
+    <script src="__PUBLIC__/js/goTop.js"></script>
+    <script src="__PUBLIC__/js/TouchSlide.1.1.source.js"></script>
+    <!-- <script src="__PUBLIC__/lib/layer_m/layer.m.js"></script>-->
+    <script src="__PUBLIC__/lib/layer/layer.js"></script>
+</head>
+<body class="x12 bg">
+    <div class="bg-red text-white padding text-center">
+        <span class="win-back icon-mail-reply float-left"></span>
+        我约谈的项目
+    </div>
+    <div class="margin-top">
+	    <zmllist name="interview" id="zml">
+			<div class="x12 bg-white padding-top padding-bottom border-bottom">
+				<span class="x3"><img src="{$zml.cover_img|cut_image=160,60}" class="img-responsive" alt="{$zml.item_name}"></span>
+				<span class="x6 padding-small text-small"><a href="{:U('Home/Item/info',array('id'=>$zml['id']))}" >{$zml.item_name}</a></span>
+				<span class="x3">
+					<button class="button button-small radius-none bg-yellow padding-small">{$zml.progress_name}中</button>
+				</span>
+			</div>
+	    </zmllist>
+	</div>
+    <div class="x12 text-center padding"><ul class="pagination border-red pagination-small">{$page}</ul></div>
+	<include file="Public:foot" />
+</body>
+</html>

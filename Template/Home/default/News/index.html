@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<title>{$title}</title>
+	<meta name="keywords" content="<Zml:keywords />"/>
+	<meta name="description" content="<Zml:description />"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+	<link rel="stylesheet" href="__THEME__/default/css/zml.css">
+	<script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+	<script src="__PUBLIC__/js/pintuer.js"></script>
+	<script src="__PUBLIC__/js/respond.js"></script>
+	<script src="__PUBLIC__/lib/layer/layer.js"></script>
+</head>
+<body class="bg">
+	<!-- 导航 -->
+	<include file="Public/header" />
+	<!-- 内容 -->
+	<div class="container">
+		<!-- 面包屑 -->
+		{$bread}
+		<div class="x12 margin-top">
+			<!-- 左侧主要内容 -->
+			<div class="x8 padding-right">
+				<style>
+				.tab .tab-nav li a{line-height:30px;border-radius:inherit;padding: 8px 40px;}
+				.tab .tab-nav li {background-color: #fff;border-radius: inherit;}
+				.tab .tab-nav .active{background-color: #EA544A; }
+				.tab .tab-nav .active a{color: #fff;}
+				</style>
+				<div class="tab">
+					<div class="tab-head">
+						<ul class="tab-nav">
+							<li <if condition="$_GET['id'] eq ''">class="active"</if>><a href="/News">全部</a></li>
+							<navlist pid="" order="id desc">
+				                <li <if condition="$_GET['id'] eq $zml['id']">class="active"</if>><a href="{$zml.url}">{$zml.name}</a></li>
+				            </navlist>
+						</ul>
+					</div>
+					<div class="x12 tab-body bg-white padding-big">
+						<!-- 新闻列表 -->
+						<div class="tab-panel active" id="tab-a">
+							<!-- 列表循环 -->
+							<zmllist name="newslist" id="zml">
+								<div class="x12">
+									<span class="x12 padding-big border-bottom">
+										<a href="{$zml.url}">
+											<span class="x10">{$zml.title}</span>
+											<span class="x2">{$zml.time|date="m-d",###}</span>
+										</a>
+									</span>
+								</div>
+							</zmllist>
+							
+							<!-- 分页 -->
+							<div class="x12 margin-big-top text-center">
+								<ul class="pagination border-red pagination-small">
+			                        {$page}
+			                    </ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 右侧 -->
+			<include file="Public/left" />
+		</div>
+	</div>
+	<!-- 底部 -->
+	<include file="Public/foot" />
+</body>
+</html>

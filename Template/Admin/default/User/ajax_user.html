@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <title>$zml.title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+  <script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+  <script src="__PUBLIC__/js/pintuer.js"></script>
+  <script src="__PUBLIC__/js/respond.js"></script>
+  <script src="__PUBLIC__/lib/layer/layer.js"></script>
+  <script type="text/javascript" src="__PUBLIC__/lib/validform/Validform.min.js"></script>
+  <link href="__PUBLIC__/lib/validform/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+  <div class="container">
+ 
+		
+      <div class="x12 padding ">
+			<div class="x6 padding">
+				用户总数：<span class="text-dot">{$alluser}</span> 个
+				<a href="__MODULE__/User" class="text-sub">全部</a>
+			</div>
+			<div class="x6 padding-bottom">
+				<form action="__SELF__" method="get" >
+				<input type="text" name="key" size="50" class="input input-auto box-shadow-none radius-none"  placeholder="手机号 / 姓名 / 地区进行搜索"/>
+				<button type="submit"  class="button box-shadow-none bg-sub radius-none icon-search"  /> 搜索</button>
+				</form>
+			</div>
+         <table class="table table-bordered table-hover text-small">
+          <tbody>
+            <tr>
+            
+			  <th>手机号码</th>
+			  <th>名字</th>
+			  <th>性别</th>
+			  <th><if condition="$_GET['money'] neq 'asc'">
+					<a href="__MODULE__/User?money=asc" class="text-blue">余额 <span class="icon-caret-down"></span></a>
+				<else />
+					<a href="__MODULE__/User" class="text-blue">余额 <span class="icon-caret-up"></span></a>
+				</if>
+			</th>
+			  <th>
+			  <if condition="$_GET['points'] neq 'asc'">
+					<a href="__MODULE__/User?points=asc" class="text-blue">积分 <span class="icon-caret-down"></span></a>
+				<else />
+					<a href="__MODULE__/User" class="text-blue">积分 <span class="icon-caret-up"></span></a>
+				</if>
+			  </th>
+			  <th>发布的项目</th>
+			  <th>领投的项目</th>
+			  <th>提过的问题</th>
+			  <th>地区</th>
+			  <th>
+				<if condition="$_GET['create_time'] neq 'asc'">
+					<a href="__MODULE__/User?create_time=asc" class="text-blue">注册时间 <span class="icon-caret-down"></span></a>
+				<else />
+					<a href="__MODULE__/User" class="text-blue">注册时间 <span class="icon-caret-up"></span></a>
+				</if>
+			  </th>
+			  <th>
+				选择
+			  </th>
+            </tr>
+
+            <volist name="lists" id="vo">
+            <tr  class="height">
+              <td >{$vo.phone}</td>
+              <td>{$vo.name}</td>
+              <td><if condition="$vo['sex'] eq '1' ">男<elseif condition="$vo['sex'] eq 2 "/>女<else />未知</if></td>             
+              <td>{$vo.money}</td>
+              <td>{$vo.points}</td>
+              <td>{$vo.item} 个</td>
+              <td>{$vo.itemLead} 个</td>
+              <td>{$vo.questions} 个</td>
+			  <td>{:region_address($vo['area'])}</td>
+              <td>{$vo.create_time|date="Y-m-d H:i",###}</td>
+              <td><button class="button button-small bg-sub" type="button" onclick="choose({$vo.uin})">选择</button></td>
+            </tr>
+            </volist>
+          </tbody>
+        </table>
+        <div class="margin-big-top">
+          <ul class="pagination">
+            {$page}
+          </ul>
+        </div>
+ </div>
+    </div>
+  
+
+<script>
+function choose(uin){
+ parent.$("input[name='uin']").val(uin);
+ parent.layer.closeAll();
+}
+
+
+</script>
+</body>
+</html>

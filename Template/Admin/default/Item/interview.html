@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <title>$zml.title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+  <script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+  <script src="__PUBLIC__/js/pintuer.js"></script>
+  <script src="__PUBLIC__/js/respond.js"></script>
+  <script src="__PUBLIC__/lib/layer/layer.js"></script>
+  <script type="text/javascript" src="__PUBLIC__/lib/validform/Validform.min.js"></script>
+  <link href="__PUBLIC__/lib/validform/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<div class="x12 padding border-bottom">
+	<h1>约谈管理</h1>
+</div>
+<div class="x12 padding">
+	<div class="x12 text-center padding-top padding-bottom border-bottom border-top margin-top">
+		<a href="__MODULE__/Item/interview/itemid/{:$_GET['itemid']}" class="x1 border-right <if condition="$_GET['status'] eq ''"> text-red</if>">全部</a>
+		<a href="__MODULE__/Item/interview/itemid/{:$_GET['itemid']}/status/0" class="x1 border-right <if condition="$_GET['status'] eq '0'">text-red</if>">待约谈</a>
+		<a href="__MODULE__/Item/interview/itemid/{:$_GET['itemid']}/status/1" class="x1 border-right <if condition="$_GET['status'] eq '1'">text-red</if>">已约谈</a>
+		<a href="__MODULE__/Item/interview/itemid/{:$_GET['itemid']}/status/2" class="x1 border-right <if condition="$_GET['status'] eq '2'">text-red</if>">已拒绝</a>
+	</div>
+</div>
+<zmllist name="list" id="zml">
+	<div class="x12 bg padding">
+		<div class="x12 bg-white padding height-big">
+			<span class="float-left padding-big-left padding-big-right  border-right">{$zml.item_name}</span>
+			<span class="float-left padding-big-left padding-big-right text-small border-right">约谈人：{$zml.user_name}</span>
+			<span class="float-left padding-big-left padding-big-right  text-small border-right">提交时间：{$zml.time|date="Y-m-d h:i:s",###}</span>
+			<if condition="!$zml['status']">
+				<button onClick="sub('{$zml.id}','{$zml.user_name}',2)" class="button float-right radius-none bg-main icon-times"> 拒绝约谈</button>
+				<button onClick="sub('{$zml.id}','{$zml.user_name}',1)" class="button float-right radius-none bg-yellow icon-check  margin-right"> 约谈</button>
+				<else />
+				<span class="text-red float-right">{$zml.interview_name}</span>
+			</if>
+		</div>
+		<div class="x12 bg-white padding border-top text-small"><span class="text-yellow text padding-left">内容：</span>{$zml.content}</div>
+	</div>
+</zmllist>
+<div class="x12 text-center padding"><ul class="pagination border-red pagination-small">{$page}</ul></div>
+</div>
+</div>
+</div>
+
+<script>
+	function sub(id,user_name,status){
+		if(status == '1'){
+			var str = '您已经跟'+user_name+'约谈过了吗?';
+		}else if(status == '2'){
+			var str = '您确定要拒绝'+user_name+'的约谈吗?';
+		}
+		layer.confirm(str, {
+		    btn: ['是','否'] //按钮
+		}, function(){
+		    $.post("__MODULE__/Item/intervies_status", {
+			 	id: id,
+			 	status:status
+			},function(d){
+				if (d.status == 1) {
+					layer.open({
+					    content: d.info,
+					    yes: function(index){
+					        layer.close(index); //一般设定yes回调，必须进行手工关闭
+					        layer.closeAll('page');
+					        window.location.reload()
+					    }
+					});  
+				}else{
+					alert(d.info);
+				}
+		   	});
+		}, function(){
+		    layer.msg('您选择了取消', {shift: 2});
+		});
+	}
+</script>
+</body>
+</html>

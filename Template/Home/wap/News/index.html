@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <title>{$title} - <Zml:title /></title>
+    <meta name="keywords" content="{$keywords}"/>
+    <meta name="description" content="{$description}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+    <link rel="stylesheet" href="__THEME__/default/css/zml.css">
+    <script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+    <script src="__PUBLIC__/js/pintuer.js"></script>
+    <script src="__PUBLIC__/js/respond.js"></script>
+    <script src="__PUBLIC__/js/TouchSlide.1.1.source.js"></script>
+    <script src="__PUBLIC__/lib/layer_m/layer.m.js"></script>
+</head>
+<body>
+    <div class="x12 padding">
+        <!-- 新闻列表 -->
+        <style>
+        .tab .tab-nav li a{line-height:30px;border-radius:inherit;padding: 6px 10px;}
+        .tab .tab-nav li {background-color: #fff;border-radius: inherit;}
+        .tab .tab-nav .active{background-color: #EA544A; }
+        .tab .tab-nav .active a{color: #fff;}
+        .tab-panel img{max-width:100%}
+        </style>
+        <div class="x12 tab text-small margin-top">
+        <div class="tab">
+            <ul class="tab-nav" style="padding-left:0px;">
+                <navlist pid="" order="id desc">
+                    <li <if condition="$_GET['id'] eq $zml['id']">class="active"</if>><a href="{$zml.url}">{$zml.name}</a></li>
+                </navlist>
+            </ul>
+        </div>
+        <!-- 新闻列表 -->
+        <div class="x12 tab-body bg-white padding">
+            <div class="tab-panel active" id="tab-a">
+                <!-- 列表循环开始 -->
+                <zmllist name="newslist" id="zml">
+                    <div class="x12">
+                        <span class="x12 padding-top padding-bottom border-bottom">
+                            <a href="{$zml.url}">
+                                <span class="x10">{$zml.title}</span>
+                                <span class="x2">{$zml.time|date="m-d",###}</span>
+                            </a>
+                        </span>
+                    </div>
+                </zmllist>
+                <!-- 列表循环结束 -->
+                <!-- 分页 -->
+                <div class="x12 margin-big-top text-center">
+                    <ul class="pagination border-red pagination-small">
+                        {$page}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <include file="Public/foot" />
+</body>
+</html>

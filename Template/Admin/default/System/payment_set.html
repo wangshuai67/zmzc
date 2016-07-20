@@ -1,0 +1,136 @@
+<link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+<script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+<script src="__PUBLIC__/js/pintuer.js"></script>
+<script src="__PUBLIC__/lib/layer/layer.js"></script>
+<script src="__PUBLIC__/lib/validform/Validform.min.js"></script>
+	<div class="x12 padding-large">
+
+		<form method="POST" class="form-x" autocomplete="off">
+      		<div class="form-group">
+      			<div class="label x2"><label for="title">名称</label></div>
+      			<div class="field x9">
+      				<input type="text" class="input" id="title" name="title" value="{$info.title}" disabled="disabled">
+      			</div>
+      		</div>
+      		<input type="hidden" id="ico" name="ico" value="{$info.ico}">
+
+      		<div class="form-group">
+      			<div class="label x2"><label for="sort">排序值</label></div>
+      			<div class="field x9">
+      				<input type="number" class="input" id="sort" name="sort" value="{$info.sort}" datatype="*1-3">
+      			</div>
+      		</div>
+      		<input type="hidden" id="status" name="status" value="{$info.status}">
+
+      		<if condition="$info.email ">
+      		<div class="form-group">
+      			<div class="label x2"><label for="email">收款账号</label></div>
+      			<div class="field x9">
+      				<input type="text" class="input" id="email" name="email" value="{$info.email}" datatype="e">
+      				<div class="input-note"></div>
+      			</div>
+      		</div>
+      		</if>
+
+      		<if condition="$info.partner ">
+      		<div class="form-group">
+      			<div class="label x2"><label for="partner">合作者ID </label></div>
+      			<div class="field x9">
+      				<input type="text" class="input" id="partner" name="partner" value="{$info.partner}" datatype="*">
+      				<div class="input-note"></div>
+      			</div>
+      		</div>
+      		</if>
+
+      		<if condition="$info.key ">
+      		<div class="form-group">
+      			<div class="label x2"><label for="key">加密KEY</label></div>
+      			<div class="field x9">
+      				<input type="text" class="input" id="key" name="key" value="{$info.key}" datatype="*">
+      				<div class="input-note"></div>
+      			</div>
+      		</div>
+      		</if>
+
+      		<if condition="$info.business ">
+      		<div class="form-group">
+      			<div class="label x2"><label for="business">收款帐号</label></div>
+      			<div class="field x9">
+      				<input type="text" class="input" id="business" name="business" value="{$info.business}" datatype="*">
+      				<div class="input-note"></div>
+      			</div>
+      		</div>
+      		</if>
+
+      		<div class="clearfix"></div>
+
+      		<div class="form-button">
+      			<button class="button bg-sub" type="submit">保存配置</button>
+      		</div>
+      	</form>
+    </div>
+
+<script type="text/javascript">
+$(function(){
+    $(".form-x").Validform({
+        tiptype:2,
+        callback:function(form){
+        	var sort = $("#sort").val();
+
+            if (sort<0) {
+                layer.tips('请输入正确的排序值！', '#sort', {
+                    tips: [1, '#ea544a']
+                });
+                return false;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '{:U('Admin/System/payment_set',array('type'=>$_GET['type']))}',
+                data:{
+                    title:$("#title").val(),
+                    ico:$("#ico").val(),
+                    sort:$("#sort").val(),
+                    status:$("#status").val(),
+                    <if condition="$info.email ">
+                    email:$("#email").val(),
+                    </if>
+
+                    <if condition="$info.key ">
+                    key:$("#key").val(),
+                    </if>
+
+                    <if condition="$info.partner ">
+                    partner:$("#partner").val(),
+                    </if>
+
+                    <if condition="$info.business ">
+                    business:$("#business").val(),
+                    </if>
+
+                },
+                dataType: "json",
+
+                success: function(data){
+                    if (data.status == 1) {
+                        parent.layer.msg(data.info, {
+                            shift: 2,
+                            time: 1000,
+                            shade: [0.1,'#000'],
+                            end: function(){
+                                parent.location.reload();
+                            }
+                        });
+                    }else if (data.status == 0) {
+                        parent.layer.alert(data.info,{icon: 5});
+                    }else{
+                        parent.layer.alert('请求失败...',{icon: 2});
+                    }
+                },
+            });
+        
+            return false;
+        }
+    });
+})
+</script>

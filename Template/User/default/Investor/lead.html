@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>我领投的项目 - 会员中心<Zml:title /></title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+<script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+<script src="__PUBLIC__/js/pintuer.js"></script>
+<script src="__PUBLIC__/js/respond.js"></script>
+<script src="__LIB__layer/layer.js"></script>
+<script src="__LIB__laydate/laydate.js"></script>
+<script type="text/javascript" charset="utf-8" src="__LIB__ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__LIB__ueditor/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="__LIB__ueditor/lang/zh-cn/zh-cn.js"></script>
+</head>
+<body style="background:#e7e8eb">
+<include file="Home@default/Public/header" />
+<include file="./header" />
+<div class="x12 padding border-bottom">
+	<h1>我领投的项目</h1>
+</div>
+<include file="top" />
+<zmllist name="list" id="zml">
+	<div class="x12 bg padding">
+		<div class="x3 padding  bg-white">
+			<img src="{$zml.cover_img}" alt="{$zml.item_info.name}" class="x12" height="94">
+		</div>
+		<div class="x9 bg padding bg-white border-left height-big">
+			<div>
+				<span class="x6 text-big">{$zml.item_name}</span>
+				<span class="x6 text-right text-red text-small">领投时间：{$zml.time|date="Y-m-d H:i:s",###}</span>
+			</div>
+			<div class="x12 text-gray margin-small-top text-small">
+					<span class="x12">领投责任: <span class="text-red"> {$zml.do_what}</span></span>
+			</div>
+			<div class="x12 text-gray text-small">
+					<span class="x12">我认购的金额: <span class="text-red"> ￥{$zml.money}</span></span>
+			</div>
+		</div>
+	</div>
+</zmllist>
+<div class="x12 text-center padding"><ul class="pagination border-red pagination-small">{$page}</ul></div>
+</div>
+</div>
+</div>
+<div class="clearfix"></div>
+<include file="Home@default/Public/foot" />
+</body>
+</html>

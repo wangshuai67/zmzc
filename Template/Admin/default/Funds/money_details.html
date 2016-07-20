@@ -1,0 +1,55 @@
+<include file="Public/header" />
+<div class="x12 padding border-bottom">
+	<span class="x2">资金明细</span>
+	<div class="x6 ">
+		<a href="{:U('Admin/Funds/money_details')}" class='x1  <if condition="!$_GET['type']"> text-red</if>'>全部</a>
+		<a href="{:U('Admin/Funds/money_details',array('type'=>1))}" class='x1  <if condition="$_GET['type'] eq 1">text-red</if>'>进账</a>
+		<a href="{:U('Admin/Funds/money_details',array('type'=>2))}" class='x1  <if condition="$_GET['type'] eq 2">text-red</if>'>出账</a>
+	</div>
+
+</div>
+<div class="x12 padding">
+
+<table class="table table-bordered text-small table-striped">
+<tr>
+	<th>用户</th>
+	<th>用途</th>
+	<th>类型</th>
+	<th>金额</th>
+	<th>余额</th>
+	<th>创建时间</th>
+	<th>更新时间</th>
+	<th>备注</th>
+	<th>状态</th>
+</tr>
+<zmllist name="lists" id="zml">
+<tr>
+	<td><a href="{:U('Admin/Funds/money_details',array('uin'=>$zml['uin']))}" class="text-sub">{$zml.user_name}</a></td>
+	<td>{$zml.title}</td>
+	<td><if condition="$zml['type'] eq 1">进账<else />出账</if></td>
+	<td><if condition="$zml['type'] eq 1">+<else />-</if> {$zml.money}</td>
+	<td>￥{$zml.balance}</td>
+	<td>{$zml.create_time|date="Y-m-d h:i:s",###}</td>
+	<td><if condition="$zml['update_time']">{$zml.update_time|date="Y-m-d h:i:s",###}</if></td>
+	<td title="{$zml.remark}">{$zml.remark|cutStr=10}</td>
+	<td>
+		<if condition="$zml['status'] eq 1">
+			<span class="text-red float-right">成功</span>
+		<else />
+			<span class="text-red float-right">处理中...</span>
+		</if>
+	</td>
+</tr>
+	
+</zmllist>
+</table>
+</div>
+<div class="clearfix"></div>
+<div class="x12 text-center padding"><ul class="pagination pagination-group border-red pagination-small">{$page}</ul></div>
+</div>
+</div>
+</div>
+
+
+</body>
+</html>

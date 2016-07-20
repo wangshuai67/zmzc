@@ -1,0 +1,90 @@
+<include file="Public/header" />
+<div class="x12 padding ">
+	<div class="x6 padding">
+		用户总数：<span class="text-dot">{$alluser}</span> 个
+	</div>
+	<div class="x6 padding-bottom">
+		<form action="__SELF__" method="get" >
+			<input type="text" name="key" size="50" class="input input-auto box-shadow-none radius-none"  placeholder="手机号 / 姓名 / 地区进行搜索"/>
+			<button type="submit"  class="button box-shadow-none bg-sub radius-none icon-search"  /> 搜索</button>
+		</form>
+	</div>
+	<table class="table table-bordered table-hover text-small">
+		<tbody>
+			<tr>
+				<th>头像</th>
+				<th>手机号码</th>
+				<th>名字</th>
+				<th>
+					<if condition="$_GET['money'] neq 'asc'">
+						<a href="__MODULE__/User?money=asc" class="text-blue">余额 <span class="icon-caret-down"></span></a>
+						<else />
+						<a href="__MODULE__/User" class="text-blue">余额 <span class="icon-caret-up"></span></a>
+					</if>
+				</th>
+				<th>
+					<if condition="$_GET['points'] neq 'asc'">
+						<a href="__MODULE__/User?points=asc" class="text-blue">积分 <span class="icon-caret-down"></span></a>
+						<else />
+						<a href="__MODULE__/User" class="text-blue">积分 <span class="icon-caret-up"></span></a>
+					</if>
+				</th>
+				<th>发布</th>
+				<th>领投</th>
+				<th>提问</th>
+				<th>约谈</th>
+				<th>收藏</th>
+				<th>
+					<if condition="$_GET['create_time'] neq 'asc'">
+						<a href="__MODULE__/User?create_time=asc" class="text-blue">注册时间 <span class="icon-caret-down"></span></a>
+						<else />
+						<a href="__MODULE__/User" class="text-blue">注册时间 <span class="icon-caret-up"></span></a>
+					</if>
+				</th>
+			</tr>
+			<volist name="lists" id="vo">
+				<tr  class="height">
+					<td>
+						<if condition="$vo['header']">
+							<img src="{$vo.header}" width="50" />
+						</if>
+					</td>
+					<td >{$vo.phone}</td>
+					<td>{$vo.name} (  <if condition="$vo['sex'] eq '1'">男<elseif condition="$vo['sex'] eq '2'" />女<else />未知</if> )
+					</td>
+					<td><a href="__MODULE__/Funds/money_details/uin/{$vo.uin}" class="text-sub">￥{$vo.money} 元</a></td>
+					<td><a href="###" class="text-sub">{$vo.points}</a></td>
+					<td><a href="__MODULE__/Item/index/uin/{$vo.uin}" class="text-sub">{$vo.item} 个</a></td>
+					<td><a href="javascript:void(0)" onclick="iframe('__MODULE__/Investor/lead/uin/{$vo.uin}')"  class="text-sub">{$vo.itemLead} 个</a></td>
+					<td><a href="__MODULE__/Item/index/uin/{$vo.uin}" class="text-sub">{$vo.questions} 个</a></td>
+					<td><a href="javascript:void(0)" onclick="iframe('__MODULE__/Investor/interview_item/uin/{$vo.uin}')" class="text-sub">{$vo.interview} 个</a></td>
+					<td><a href="javascript:void(0)" onclick="iframe('__MODULE__/Investor/collect_item/uin/{$vo.uin}')"  class="text-sub">{$vo.investor} 个</a></td>
+					<td>{$vo.create_time|date="Y-m-d H:i",###}</td>
+				</tr>
+			</volist>
+		</tbody>
+	</table>
+	<div class="margin-big-top">
+		<ul class="pagination">
+			{$page}
+		</ul>
+	</div>
+</div>
+</div>
+<!-- 底部 -->
+<include file="foot" />
+</div>
+<script>
+function iframe(url){
+	layer.open({
+		type: 2,
+		title: '约谈',
+		shadeClose: true,
+		shade: 0.8,
+		area: ['1000px', '570px'],
+		content: url
+	});
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<extend name="_Layout/main"/>
+
+
+<block name="main">
+<div class="step">
+		 <div class="step-bar complete " style="width:20%;"><span class="step-point icon-check"></span><span class="step-text">安装协议</span></span></div>
+		 <div class="step-bar complete" style="width:20%;"><span class="step-point">2</span><span class="step-text">环境检测</span></div>
+		 <div class="step-bar complete" style="width:20%;"><span class="step-point">3</span><span class="step-text">参数设置</span></div>
+		 <div class="step-bar complete" style="width:20%;"><span class="step-point">4</span><span class="step-text">开始安装</span></div>
+		 <div class="step-bar active" style="width:20%;"><span class="step-point">5</span><span class="step-text">完成安装</span></div>
+	</div>
+    <div class="x12">
+        <div class="panel">
+            <div class="panel-head">
+                <span>恭喜您，{:C('INSTALL_PRODUCT_NAME')}安装完成！</span>
+            </div>
+            <div class="panel-body">
+				
+				<div class="keypoint bg-blue bg-inverse radius text-center">
+					<h1 class=" text-white">恭喜您，{:C('INSTALL_PRODUCT_NAME')}安装完成！</h1>
+					<p class="text-white">默认后台账号：admin   密码：admin123  请进入后台及时修改账号密码</p>
+					<p>
+						 <a class="button bg-green" target="_blank" href="{:U('Admin/Index/index')}">登录后台</a>
+						 <a class="button bg-red" target="_blank" href="__ROOT__/">访问首页</a>
+                    </p>
+				</div>
+            </div>
+            <div class="panel-foot">
+                <span>版权所有 (c) 2014－<php>echo date("Y",time());</php>{:C('INSTALL_COMPANY_NAME')} 保留所有权利。</span>
+            </div>
+        </div>
+    </div>
+</block>

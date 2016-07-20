@@ -1,0 +1,10 @@
+<div class="x12 padding">
+	<div class="x12 text-center padding-top padding-bottom border-bottom border-top margin-top">
+		<a href="{:U('Investor/index',array('uin'=>$_GET['uin']))}" class='x2 border-right <if condition='CONTROLLER_NAME eq Investor and ACTION_NAME  eq index'>text-red</if>'>全部项目</a>
+		<a href="{:U('Investor/collect_item',array('uin'=>$_GET['uin']))}" class='x2 border-right <if condition='CONTROLLER_NAME eq Investor and ACTION_NAME  eq collect_item'>text-red</if>'>收藏的项目</a>
+		<a href="{:U('Investor/interview_item',array('uin'=>$_GET['uin']))}" class='x2 border-right <if condition='CONTROLLER_NAME eq Investor and ACTION_NAME  eq interview_item'>text-red</if>'>约谈的项目</a>
+		<a href="{:U('Investor/lead',array('uin'=>$_GET['uin']))}" class='x2 border-right <if condition='CONTROLLER_NAME eq Investor and ACTION_NAME  eq lead'>text-red</if>'>领投的项目</a>
+		<a href="{:U('Investor/with_item',array('uin'=>$_GET['uin']))}" class='x2 border-right <if condition='CONTROLLER_NAME eq Investor and ACTION_NAME  eq with_item'>text-red</if>'>跟投的项目</a>
+		<a href="{:U('Investor/index',array('uin'=>$_GET['uin']))}" class='x2 border-right'>完成的项目</a>
+	</div>
+</div>

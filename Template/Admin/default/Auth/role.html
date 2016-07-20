@@ -1,0 +1,46 @@
+ <include file="Public/header" />
+
+      <div class="x12 padding-top padding border-bottom">
+		<h3 class="x3">角色管理</h3>
+		<button class="button float-right bg-sub icon-plus" type="button"  onclick="role_add(this)" > 创建角色</button>
+      </div>
+      <div class="x12">
+		<div class="x12 padding">
+			<ul class="list-group list-striped radius-none">
+				<volist name="list" id="v">
+					<li><span class="float-right"><a href="javascript:void(0)" onclick="role_edit({$v.id})"  class="text-blue">分配权限</a> </span>{$v.title}</li>
+				</volist>
+			</ul>
+		</div>
+      </div>
+    </div>
+	<script>
+		//创建角色
+		function role_add(){
+			layer.open({
+				type: 2,
+				area: ['700px', '560px'],
+				fix: true, //不固定
+				maxmin: true,
+				title:'创建角色',
+				content: '__MODULE__/Auth/role_add'
+			});
+		}
+		//编辑角色
+		function role_edit(id){
+			layer.open({
+				type: 2,
+				area: ['700px', '560px'],
+				fix: true, //不固定
+				maxmin: true,
+				title:'编辑角色',
+				content: '__MODULE__/Auth/role_edit/id/'+id
+			});
+		}
+		
+	</script>
+  	<!-- 底部 -->
+    <include file="foot" />
+  </div>
+</body>
+</html>

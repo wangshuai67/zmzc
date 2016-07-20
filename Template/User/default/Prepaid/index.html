@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>会员中心 - <Zml:title /></title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+<script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+<script src="__PUBLIC__/js/pintuer.js"></script>
+<script src="__PUBLIC__/js/respond.js"></script>
+<script src="__LIB__/layer/layer.js"></script>
+</head>
+<body style="background:#e7e8eb">
+<include file="Home@default/Public/header" />
+<include file="./header" />
+	<div class="padding">
+
+	<div class="x12 padding-bottom border-bottom">
+		<div class="x6 padding-large">
+			<h2>我的余额</h2>
+			<div class="padding text-bold" style="font-size:50px;">￥0元</div>
+		</div>
+		<div class="x6 padding-large">
+			<a href="__MODULE__/Withdraw" class="button bg-blue radius-none">提现</a>
+			<a href="__MODULE__/Prepaid" class="button bg-red radius-none">充值</a>
+		</div>
+		
+	</div>
+
+    <div class="x12 padding-big">
+
+        <form class="form-x" id="form-pay" action="{:U('Prepaid/pay_param')}" method="post" autocomplete="off" target="_blank">
+
+            <div class="form-group">
+                <div class="label"><strong>充值方式:</strong></div>
+                <div class="field">
+                    <div class="button-group radio">
+                        <label class="button active"><input name="money_type" value="1" checked="checked" type="radio">在线支付</label>
+                        <!-- <label class="button"><input name="money_type" value="2" type="radio">第三方托管支付</label> -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="label"><label for="money">充值金额:</label></div>
+                <div class="field">
+                    <div class="input-group x3">
+                        <input type="text" class="input" id="money" name="money" value="" datatype="*1-8" placeholder="" />
+                        <span class="addon">元</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label"><strong>支付方式:</strong></div>
+                <div class="field">
+                    <div class="button-group border-sub radio" id="pay_type">
+
+                        <volist name="payment_lists" id="vo">
+                        <label class="button <if condition="$i eq 1">active</if>">
+                            <img src="{$vo.ico}" width="23">
+                            <input type="radio" name="paytype" value="{$vo.type}" <if condition="$i eq 1">checked="checked"</if> title="{$vo.title}">{$vo.title}
+                        </label>
+                        </volist>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-button">
+                <button class="button bg-sub radius-none" type="submit">确定，去付款</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+</div>
+</div>
+</div>
+<div class="clearfix"></div>
+
+<include file="Home@default/Public/foot" />
+<script type="text/javascript" src="__LIB__/validform/Validform.min.js"></script>
+
+<script type="text/javascript">
+$(function(){
+    $(".form-x").Validform({
+        tiptype:2,
+        callback:function(form){
+            var money = $("#money").val();
+            var paytype = $('#pay_type input[name="paytype"]:checked ').attr('title');
+
+            if (money<0.01) {
+                layer.tips('请输入正确的充值金额！', '#money', {
+                    tips: [1, '#ea544a']
+                });
+                return false;
+            };
+
+            layer.confirm('确定要使用'+paytype+'充值'+money+'元？', function(){
+                document.getElementById("form-pay").submit();
+                //setTimeout("location.href = '/'",1000); 
+                layer.confirm('请您确认已在新窗口完成支付', {
+                    icon: 6,
+                    btn: ['完成支付','取消支付'] //按钮
+                }, function(){
+                    location.href = '{:U('User/index/index')}';
+                }, function(){
+                    //layer.msg('取消成功', {shift: 6});
+                });
+
+            });
+        
+            return false;
+        }
+    });
+})
+</script>
+</body>
+</html>

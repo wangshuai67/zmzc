@@ -1,0 +1,36 @@
+<extend name="_Layout/main"/>
+
+<block name="main">
+	<div class="step">
+		 <div class="step-bar complete " style="width:20%;"><span class="step-point icon-check"></span><span class="step-text">安装协议</span></span></div>
+		 <div class="step-bar complete" style="width:20%;"><span class="step-point">2</span><span class="step-text">环境检测</span></div>
+		 <div class="step-bar complete" style="width:20%;"><span class="step-point">3</span><span class="step-text">参数设置</span></div>
+		 <div class="step-bar active " style="width:20%;"><span class="step-point">4</span><span class="step-text">开始安装</span></div>
+		 <div class="step-bar" style="width:20%;"><span class="step-point">5</span><span class="step-text">完成安装</span></div>
+	</div>
+    <div class="x12 padding">
+        <div class="panel">
+            <div class="panel-head">
+                <span>开始安装</span>
+            </div>
+            <div class="panel-body">
+                <div id="show-list" class="install-database">
+                </div>
+                <script type="text/javascript">
+                    var list   = document.getElementById('show-list');
+                    function showmsg(msg, classname){
+                        var li = document.createElement('p');
+                        li.innerHTML = msg;
+                        classname && li.setAttribute('class', classname);
+                        list.appendChild(li);
+                        document.scrollTop += 30;
+                    }
+                </script>
+                <button class="button disabled">正在<eq name="Think.session.update" value="1">升级<else/>安装</eq>，请稍后...</button>
+            </div>
+            <div class="panel-foot">
+                <span>版权所有 (c) 2014－<php>echo date("Y",time());</php>{:C('INSTALL_COMPANY_NAME')} 保留所有权利。</span>
+            </div>
+        </div>
+    </div>
+</block>

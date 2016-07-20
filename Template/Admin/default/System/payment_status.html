@@ -1,0 +1,189 @@
+<link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+<script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+<script src="__PUBLIC__/js/pintuer.js"></script>
+<script src="__PUBLIC__/lib/layer/layer.js"></script>
+<script src="__PUBLIC__/lib/validform/Validform.min.js"></script>
+	<div class="x12 padding-large">
+
+        <div class="progress progress-big progress-striped active">
+          <div id="progress" class="progress-bar bg-blue" progress="20" style="width:20%;">进度：20%</div>
+        </div>
+
+        <ul class="padding-large" id="progress_list">
+            
+        </ul>
+
+		<form method="POST" class="form-x" autocomplete="off" style="display:none;">
+      		<div class="form-group">
+      			<div class="label x2"><label for="title">名称</label></div>
+      			<div class="field x9">
+      				<input type="text" class="input" id="title" name="title" value="{$info.title}" disabled="disabled">
+      			</div>
+      		</div>
+      		<input type="hidden" id="ico" name="ico" value="{$info.ico}">
+
+      		<div class="form-group">
+      			<div class="label x2"><label for="sort">排序值</label></div>
+      			<div class="field x9">
+      				<input type="number" class="input" id="sort" name="sort" value="{$info.sort}" datatype="*1-3">
+      			</div>
+      		</div>
+            <if condition="$_GET['status'] eq 'install' ">
+                <input type="hidden" id="status" name="status" value="1">
+                <else />
+                <input type="hidden" id="status" name="status" value="0">
+            </if>
+
+      		<if condition="$info.email ">
+      		<div class="form-group">
+      			<div class="label x2"><label for="email">收款账号</label></div>
+      			<div class="field x9">
+      				<input type="text" class="input" id="email" name="email" value="{$info.email}" datatype="e">
+      				<div class="input-note"></div>
+      			</div>
+      		</div>
+      		</if>
+
+      		<if condition="$info.partner ">
+      		<div class="form-group">
+      			<div class="label x2"><label for="partner">合作者ID </label></div>
+      			<div class="field x9">
+      				<input type="text" class="input" id="partner" name="partner" value="{$info.partner}" datatype="*">
+      				<div class="input-note"></div>
+      			</div>
+      		</div>
+      		</if>
+
+      		<if condition="$info.key ">
+      		<div class="form-group">
+      			<div class="label x2"><label for="key">加密KEY</label></div>
+      			<div class="field x9">
+      				<input type="text" class="input" id="key" name="key" value="{$info.key}" datatype="*">
+      				<div class="input-note"></div>
+      			</div>
+      		</div>
+      		</if>
+
+      		<if condition="$info.business ">
+      		<div class="form-group">
+      			<div class="label x2"><label for="business">收款帐号</label></div>
+      			<div class="field x9">
+      				<input type="text" class="input" id="business" name="business" value="{$info.business}" datatype="*">
+      				<div class="input-note"></div>
+      			</div>
+      		</div>
+      		</if>
+
+      		<div class="clearfix"></div>
+
+      		<div class="form-button">
+      			<button class="button bg-sub" type="submit">保存配置</button>
+      		</div>
+      	</form>
+    </div>
+
+<script type="text/javascript">
+
+function install_progress(){
+    var progress = parseInt($("#progress").attr('progress'))+10;
+    $("#progress").attr("progress",progress);
+    $("#progress").html("安装进度："+progress+"%");
+    $("#progress").width(progress+"%");
+
+    var progress_info = new Array();
+    progress_info[30] = '<li class="fadein-bottom">正在请求芝麻乐远程服务器数据...</li>';
+    progress_info[40] = '<li class="fadein-bottom">正在从远程服务器下载相关接口文件...</li>';
+    progress_info[50] = '<li class="fadein-bottom">下载完成...</li>';
+    progress_info[60] = '<li class="fadein-bottom">文件效验中...</li>';
+    progress_info[70] = '<li class="fadein-bottom">正在解压文件...</li>';
+    progress_info[80] = '<li class="fadein-bottom">正在安装文件...</li>';
+    progress_info[90] = '<li class="fadein-bottom">正在配置...</li>';
+    progress_info[100] = '<li class="fadein-bottom">安装完成！</li>';
+
+
+    $("#progress_list").append(progress_info[progress]);
+    if (progress<100) {
+        setTimeout('install_progress()',1500);
+    }else{
+        save();
+    }
+}
+
+function uninstall_progress(){
+    var progress = parseInt($("#progress").attr('progress'))+10;
+    $("#progress").attr("progress",progress);
+    $("#progress").html("卸载进度："+progress+"%");
+    $("#progress").width(progress+"%");
+
+    var progress_info = new Array();
+    progress_info[30] = '<li class="fadein-bottom">正在关闭支付接口...</li>';
+    progress_info[60] = '<li class="fadein-bottom">文件效验中...</li>';
+    progress_info[70] = '<li class="fadein-bottom">正在删除文件...</li>';
+    progress_info[100] = '<li class="fadein-bottom">卸载完成！</li>';
+
+
+    $("#progress_list").append(progress_info[progress]);
+    if (progress<100) {
+        setTimeout('uninstall_progress()',500);
+    }else{
+        save();
+    }
+}
+
+<if condition="$_GET['status'] eq 'install' ">
+install_progress();
+<else />
+uninstall_progress();
+</if>
+
+function save(){
+    $.ajax({
+        type: 'POST',
+        url: '{:U('Admin/System/payment_set',array('type'=>$_GET['type'],'status'=>$_GET['status']))}',
+        data:{
+            title:$("#title").val(),
+            ico:$("#ico").val(),
+            sort:$("#sort").val(),
+            status:$("#status").val(),
+            <if condition="$info.email ">
+            email:$("#email").val(),
+            </if>
+
+            <if condition="$info.key ">
+            key:$("#key").val(),
+            </if>
+
+            <if condition="$info.partner ">
+            partner:$("#partner").val(),
+            </if>
+
+            <if condition="$info.business ">
+            business:$("#business").val(),
+            </if>
+
+        },
+        dataType: "json",
+
+        success: function(data){
+            if (data.status == 1) {
+                parent.layer.msg(data.info, {
+                    shift: 2,
+                    time: 1000,
+                    shade: [0.1,'#000'],
+                    end: function(){
+                        <if condition="$_GET['status'] eq 'install' ">
+                        location.href = data.url;
+                        <else />
+                        parent.location.reload();
+                        </if>
+                    }
+                });
+            }else if (data.status == 0) {
+                parent.layer.alert(data.info,{icon: 5});
+            }else{
+                parent.layer.alert('请求失败...',{icon: 2});
+            }
+        },
+    });
+}
+</script>

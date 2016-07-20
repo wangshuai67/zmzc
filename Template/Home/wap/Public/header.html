@@ -1,0 +1,35 @@
+<!-- 头部 -->
+<div class="x12 bg-white padding-small">
+    <!-- logo部分 -->
+    <div class="x4 padding-left">
+        <a href="/"><span class="text-red" style="font-size: 22px;">芝麻乐</span></a>
+    </div>
+    <!-- 搜索 -->
+    <div class="x8">
+        <form id="form">
+            <div class="input-group padding-little-top">
+                <input type="text" class="input input-small border-red text-small" name="keywords" size="30" placeholder="项目名称"  datatype="*">
+                <span class="addbtn"><button type="submit" class="button bg-red button-small height-little" onClick="select()">搜!</button></span>
+            </div>
+        </form>
+  </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/lib/validform/Validform.min.js"></script>
+<script>
+function showmsg(msg) {
+    layer.open({
+        content: msg,
+        time: 0.5
+    });
+}
+function select (){
+    // 关闭验证表单成功提示
+    $.Tipmsg.r = null;
+    // Validform 是验证方法
+    $("#form").Validform({
+        tiptype: function(msg) {
+          showmsg(msg)
+        }
+  })
+}
+</script>

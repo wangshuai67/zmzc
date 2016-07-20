@@ -1,0 +1,92 @@
+<link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+<script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+<script src="__PUBLIC__/lib/layer/layer.js"></script>
+ <div class="x12 padding-large ">
+       <form method="post" class="form-x">
+		  <div class="form-group x6">
+			<div class="label padding-right">登录账号 : </div>
+			<div class="field">
+			  <input type="text" class="input input-auto box-shadow-none radius-none"  name="username" size="30" placeholder="" />
+			</div>
+		  </div>
+		  <div class="form-group x6">
+			<div class="label padding-right">登录密码 : </div>
+			<div class="field">
+			  <input type="password" class="input input-auto box-shadow-none radius-none"  name="password" size="30"  />
+			</div>
+		  </div>
+		  <div class="form-group x6">
+			<div class="label padding-right">昵称 : </div>
+			<div class="field">
+			  <input type="text" class="input input-auto box-shadow-none radius-none"  name="nickname" size="30"  />
+			</div>
+		  </div>
+		  <div class="form-group x6">
+			<div class="label padding-right">邮箱 : </div>
+			<div class="field">
+			  <input type="text" class="input input-auto box-shadow-none radius-none"  name="email" size="30"  />
+			</div>
+		  </div>
+		  <div class="form-group x6">
+			<div class="label padding-right">用户组 : </div>
+			<div class="field">
+			  <select name="group_id" class="input input-auto box-shadow-none radius-none">
+				<volist name="groups" id="vo">
+				<option value="{$key}">{$vo}</option>
+				</volist>
+			  </select>
+			</div>
+		  </div>
+		  <div class="form-button x12 text-center"><button class="button bg-blue icon-plus" onclick="user_add(this)" type="button"> 创建管理员</button></div>
+		</form>
+      </div>
+	  <script>
+	  //创建节点
+		function user_add(d){
+			var username=$("input[name='username']");
+			var password=$("input[name='password']");
+			var nickname=$("input[name='nickname']");
+			var email=$("input[name='email']");
+			var group_id=$("select[name='group_id']").val();			
+			if(username.val()==''){
+				layer.tips('登录账号不能为空', username);
+				username.focus();
+				return false
+			}
+			if(password.val()==''){
+				layer.tips('登录密码不能为空', password);
+				password.focus();
+				return false
+			}
+			if(nickname.val()==''){
+				layer.tips('昵称还是要一个方便以后识别', nickname);
+				nickname.focus();
+				return false
+			}
+			if(email.val()==''){
+				layer.tips('邮箱是用来找回密码的', email);
+				email.focus();
+				return false
+			}
+			$.post("__MODULE__/Auth/user_add",{
+				username:username.val(),
+				password:password.val(),
+				nickname:nickname.val(),
+				email:email.val(),
+				group_id:group_id,
+			},function(ret){
+				if(ret.status==1){
+					 parent.layer.msg(ret.info, {
+						offset: 200,
+						shift: 2
+					});
+					 parent.window.location.reload()
+				}else{
+					layer.msg(ret.info, {
+						offset: 200,
+						shift: 2
+					});
+				}
+			})			
+		}
+		</script>

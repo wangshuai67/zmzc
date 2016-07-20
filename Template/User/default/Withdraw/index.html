@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>提现-会员中心-<Zml:title /></title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+<script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+<script src="__PUBLIC__/js/pintuer.js"></script>
+<script src="__PUBLIC__/js/respond.js"></script>
+<script src="__LIB__/layer/layer.js"></script>
+<script src="__LIB__/validform/Validform.min.js"></script>
+</head>
+<body style="background:#e7e8eb">
+<include file="Home@default/Public/header" />
+<include file="./header" />
+	
+	<div class="bg padding x12">
+		<div class="x6">
+			提取余额到银行卡 <span >余额: <font class="text-red">￥ {$money} 元</font></span>
+		</div>
+		<div class="x6 text-right text-gray">
+			<a href="javascript:void(0)" onclick="add_bank(this)" class="text-blue icon-plus-square-o padding-right"> 添加银行卡</a>
+				|
+			<a href="__MODULE__/Funds/money_details/type/2.html" class="text-blue padding-left"> 提现记录</a>
+		</div>
+		
+	</div>
+	<div class="detail margin-large-top x12">
+		<form class="form form-withdraw" action="#" method="post" autocomplete="off">
+
+
+		<div class="x12">
+			<div class="x3 text-right height-big">
+				选择银行卡:
+			</div>
+			<div class="x7 margin-left">
+
+			<zmllist name="bank" id="zml">
+				<div class="border padding margin-bottom">
+
+					<label class="button">
+						<input type="radio" id="bank_id" name="bank_id" value="{$zml.id}" datatype="*">
+						中国{$zml.type|cutStr=4,0,0} {$zml.card|hideStr=6,6} （{$zml.name}）
+					</label>
+					
+				</div>
+			</zmllist>
+			<if condition="!$bank ">
+				<div class="border padding ">
+					<span class="text-gray">还没有添加银行卡 <a href="javascript:void(0)" onclick="add_bank(this)" class="text-blue icon-plus-square-o padding-right"> 添加银行卡</a></span>
+				</div>
+			</if>
+			</div>
+		</div>
+
+
+		<div class="x12 margin-large-top">
+			<div class="x3 text-right height-big">
+				提现金额:
+			</div>
+			<div class="x7 margin-left">
+				<input type="text" id="money" name="money" value="{$money}" size="20" class="input input-auto box-shadow-none radius-none"  datatype="n1-8"/> 元
+			</div>
+		</div>
+		<div class="x12 margin-large-top">
+			<div class="x3 text-right height-big">
+				验证码:
+			</div>
+			<div class="x7 margin-left">
+				<input type="text" id="code" name="code" value="" size="20" class="input input-auto box-shadow-none radius-none"   datatype="s1-6"/>
+				<input type="button" class="button  border text-small" onclick="getyzm(this)" value="获取验证码" />
+			</div>
+		</div>
+		<div class="x9 margin-large-top text-center">
+			<button class="button bg-red radius-none" type="submit">确 认</button>
+		</div>
+		</form>
+	</div>
+</div>
+</div>
+</div>
+<div class="clearfix"></div>
+
+<include file="Home@default/Public/foot" />
+<script type="text/javascript">
+function add_bank(a){
+	layer.open({
+		type: 2,
+		title:'新增银行卡',
+		area: ['700px', '300px'],
+				fix: true, //不固定
+				maxmin: true,
+				content: '__MODULE__/Bank/bank_add'
+	});
+}
+
+var wait=60;
+
+function time(o) { 
+	if (wait == 0) { 
+		o.removeAttribute("disabled");	
+		o.value="获取验证码"; 
+		wait = 30; 
+	} else { 
+		o.setAttribute("disabled", true); 
+		o.value="重新发送(" + wait + ")"; 
+		wait--; 
+		setTimeout(function() { time(o) }, 1000) 
+	} 
+} 
+
+function getyzm(d){	
+	$.get('__MODULE__/Withdraw/sendsms.html',function(e){
+		if(e.status==1){
+			layer.msg(e.info);
+			time(d)
+			$(d).text('验证已发送');
+		}else{
+			layer.msg(e.info)
+		}
+	})
+}
+
+function showmsg(msg,o) {
+	layer.tips(msg, '#'+o.obj.attr('id'),{
+		tips: [2, '#ea544a'],
+		time: 4000
+	});
+}
+
+$(function() {
+	$.Tipmsg.r = null;
+	$(".form").Validform({
+		tiptype: function(msg,o) {
+			showmsg(msg,o)
+		},
+		tipSweep: true,
+		callback: function(form) {
+			$.ajax({
+				type: 'POST',
+				url: '{:U('User/Withdraw/withdrawals')}',
+				data: {
+					bank_id:$("input[name='bank_id']:checked").val(),
+					money: $("#money").val(),
+					code: $("#code").val(),
+				},
+				dataType: "json",
+				beforeSend: function() {
+					layer.load(2, {
+						shade: [0.1, '#fff']
+					})
+				},
+				success: function(data) {
+					layer.closeAll();
+					if (data.status == 1) {
+						parent.layer.msg(data.info, {
+							shift: 2,
+							time: 1000,
+							shade: [0.1, '#000'],
+							end: function() {
+								parent.location.href = data.url;
+							}
+						})
+					} else {
+						parent.layer.alert(data.info, {
+							icon: 5
+						})
+					}
+				},
+				error: function() {
+					layer.closeAll();
+					parent.layer.alert('请求失败!', {
+						icon: 5
+					})
+				},
+			});
+			return false
+		}
+	})
+});	
+</script>
+</body>
+</html>

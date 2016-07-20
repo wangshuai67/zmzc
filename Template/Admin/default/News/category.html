@@ -1,0 +1,275 @@
+<include file="Public/header" />
+
+      <div class="x12 padding-top padding border-bottom">
+
+		<h3 class="x3">新闻分类管理</h3>
+
+		<a href="javascript:void(0)" class="adds float-right bg-sub button icon-plus" type="button" onclick="node_add()"> 添加分类</a>
+
+      </div>
+
+      <div class="x12 padding">
+
+     
+
+        <table class="table table-bordered table-hover">
+
+          <tbody>
+
+            <tr>
+
+              <th>ID</th><th>分类名称</th><th>PID</th><th>排序</th><th>创建时间</th><th>操作</th>
+
+            </tr>
+
+
+
+            <volist name="lists" id="vo">
+
+            <tr id="tr{$vo.id}" class="height">
+
+              <td>{$vo.id}</td>
+
+              <td id="trname{$vo.id}">{$vo.name}</td>
+
+              <td>{$vo.pid}</td>
+
+              <td>{$vo.sort}</td>
+
+              <td>{$vo.create_time|date="Y-m-d H:i",###}</td>
+
+              <td>
+
+                <!-- <button class="update button bg-main" id="s0{$vo.id}" sid="{$vo.id}" sname="{$vo.name}">编辑</button> -->
+
+
+
+                <button class="updates button button-small bg-sub" id="s0{$vo.id}" sid="{$vo.id}" sname="{$vo.name}">编辑</button>
+
+
+
+                <button class="del button button-small bg-sub" sid="{$vo.id}" sname="{$vo.name}">删除</button>
+
+
+
+              </td>
+
+            </tr>
+
+
+
+            <volist name="vo.lower" id="rs" key="k">
+
+                        <tr id="tr{$rs.id}" class="height">
+
+              <td>{$rs.id}</td>
+
+              <td id="trname{$rs.id}">├──　　{$rs.name}</td>
+
+              <td>{$rs.pid}</td>
+
+              <td>{$rs.sort}</td>
+
+              <td>{$rs.create_time|date="Y-m-d H:i",###}</td>
+
+              <td>
+
+                <!-- <button class="update button bg-main" id="s0{$rs.id}" sid="{$rs.id}" sname="{$rs.name}">编辑</button> -->
+
+
+
+                <button class="updates button button-small bg-sub" id="s0{$rs.id}" sid="{$rs.id}" sname="{$rs.name}">编辑</button>
+
+
+
+                <button class="del button button-small bg-sub" sid="{$rs.id}" sname="{$rs.name}">删除</button>
+
+
+
+              </td>
+
+            </tr>
+
+                      </volist>
+
+
+
+
+
+            </volist>
+
+
+
+          </tbody>
+
+        </table>
+
+		 <div class="margin-big-top">
+
+          <ul class="pagination">
+
+            {$page}
+
+          </ul>
+
+			</div>
+
+        </div>
+
+
+
+
+
+  	<!-- 底部 -->
+
+    <include file="foot" />
+
+
+
+<script type="text/javascript">
+
+$(function(){
+
+  //全局配置
+
+  layer.config({
+
+    extend: [
+
+      'extend/layer.ext.js'
+
+      ]
+
+  });
+
+
+
+    //添加分类
+
+    $('.adds').click(function(){
+
+      layer.open({
+
+        type: 2,
+
+        title: '添加分类',
+
+        shadeClose: true,
+
+        shade: 0.8,
+
+        area: ['980px', '320px'],
+
+        content: '{:U('/Admin/News/category_add')}'
+
+      });
+
+    });
+
+
+
+    //修改分类
+
+    $('.updates').click(function(){
+
+      var sid = $(this).attr('sid');
+
+      layer.open({
+
+        type: 2,
+
+        title: '修改分类：'+ $(this).attr('sname'),
+
+        shadeClose: true,
+
+        shade: 0.8,
+
+        area: ['480px', '570px'],
+
+        content: "__MODULE__/News/category_update/id/"+sid
+
+      });
+
+    });
+
+    //删除
+
+    $('.del').click(function(){
+
+        var sid = $(this).attr('sid');
+
+        layer.confirm('确定要删除 "'+ $(this).attr('sname') +'" 吗？', {icon: 3},function(){
+
+            $.ajax({
+
+                type: 'POST',
+
+                url: '{:U('/Admin/News/category_del')}',
+
+                data:{
+
+                    id:sid
+
+                },
+
+                dataType: "json",
+
+                beforeSend: function() {
+
+                  layer.closeAll();
+
+                  layer.load(2,{shade: [0.1,'#000']});
+
+                },
+
+                success: function(data){
+
+                  layer.closeAll();
+
+                    if (data.status == 1) {
+
+                        
+
+                        layer.msg(data.info, {
+
+                            shift: 2,
+
+                            time: 1000,
+
+                            shade: [0.1,'#000'],
+
+                            end: function(){
+
+                                $("#tr"+sid).remove();
+
+                            }
+
+                        });
+
+                    }else{
+
+                        layer.alert(data.info,{icon: 5});
+
+                    }
+
+                }
+
+            });
+
+        });
+
+    });
+
+
+
+
+
+});
+
+
+
+</script>
+
+</body>
+
+</html>

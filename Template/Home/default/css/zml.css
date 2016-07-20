@@ -1,0 +1,47 @@
+/*流程效果过程 */
+.pitch-flow { margin-bottom: 22px; padding-bottom: 25px;border-bottom: 1px solid #f1f1f1;}
+.pitch-flow ul {position: relative;padding-left: 0;padding-right: 46px;overflow: hidden;background: url(http://assets.choudao.com/assets/CD_line1-d6c03cc143e6c7bcfd45e642fd847800.png) repeat-x 0 19px;}
+.pitch-flow li {float: left;width: 33.33%;list-style: none;}
+.pitch-flow li.last {position: absolute;right: 0;text-align: right;width: 46px;}
+.pitch-flow li .flow-item {width: 46px;padding: 0 2px;background: #fff;color: #969696;}
+.icon-flow {display: inline-block;vertical-align: middle;font-size: 0;line-height: 0;width: 41px;height: 42px;background: url(http://assets.choudao.com/assets/icon-pitch-flow-b28e0431ded7c9b69efbfd1111adf095.png);}
+.pitch-flow li .flow-item {width: 46px;padding: 0 2px;background: #fff;color: #969696;}
+.pitch-flow li .flow-item.active {color: #00DA76;}
+.active .icon-flow.icon-pitch-flow-waiting{background-position:-42px 0}
+.active .icon-flow.icon-pitch-flow-subscribing{background-position:-42px -42px}
+.active .icon-flow.icon-pitch-flow-capital_calling{background-position:-42px -84px}
+.active .icon-flow.icon-pitch-flow-settled {background-position: -42px -126px;}
+.pitch-flow li .pitch-flow-text {margin-top: 4px;width: 42px;text-align: center;}
+/*幻灯样式*/
+.focus{ width:100%; height:140px;  margin:0 auto; position:relative; overflow:hidden;   }
+.focus .hd{ width:100%; height:11px;  position:absolute; z-index:1; bottom:5px; text-align:center;  }
+.focus .hd ul{ display:inline-block; height:10px; padding:3px 5px; background-color:rgba(255,255,255,0.7); 
+-webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px; font-size:0; vertical-align:top;
+}
+.focus .hd ul li{ display:inline-block; width:5px; height:5px; -webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px; background:#8C8C8C; margin:0 5px;  vertical-align:top; overflow:hidden;   }
+.focus .hd ul .on{ background:#FE6C9C;  }
+.focus .bd{ position:relative; z-index:0; }
+.focus .bd li img{ width:100%;  height:140px; background:url(/Public/img/loading.gif) center center no-repeat;  }
+.focus .bd li a{ -webkit-tap-highlight-color:rgba(0, 0, 0, 0); /* 取消链接高亮 */  }
+/*返回顶部*/
+.backToTop{bottom: 0px!important;bottom: auto;position:fixed;_position:absolute;width:43px;height:43px;background: url(/Public/img/gotop.png) no-repeat 0 0;cursor: pointer;z-index:1990;bottom:0;display:none;}
+.backToTop:hover{background-position: 0 -43px;
+	-webkit-transition:background 0.2s ease 0s;
+	-moz-transition:background 0.2s ease 0s;
+	-o-transition:background 0.2s ease 0s;
+	-ms-transition:background 0.2s ease 0s;
+	transition:background 0.2s ease 0s;}
+.status-icons{position: absolute;right: 11px;bottom: -6px;width: 9px;height: 6px;background-position: 0 -63px;background-image: url(../img/item-s858066ddf4.png);background-repeat: no-repeat;}
+.intro-tit {background: url(../img/dobule-dotted.png) left 15px repeat-x;margin-bottom: 20px;margin-top: 10px;}
+/* timeline */
+.timeline ul {list-style:none outside none;}
+.timeline{background:url("../img/line4.png") repeat-y 100px 0;overflow:hidden;position:relative;height:100px;margin:20px 10px;width:520px;margin:40px auto 0 auto;}
+.timeline-date{overflow:hidden;position:relative;}
+.timeline-date h2{background:url("../img/icon9.png") no-repeat 40px 0;height:87px;margin-bottom:20px;}
+.timeline-date h2 span{color:#999999;display:inline-block;font-size:22px;margin:30px 0px 0 150px;}
+.timeline-date ul li{background:url("../img/icon7.png") no-repeat 71px 5px;zoom:1;height:70px;}
+.timeline-date ul li h3{float:left;text-align:right;font-size:14px;color:#878787;display:block;}	
+.timeline-date ul li h3 span{display:block;color:#ADADAD;font-size:12px;padding-left:15px;}	
+.timeline-date ul li dl{margin-top:-5px;}
+.timeline-date ul li dl.right{background:url() no-repeat 0 0;float:left;margin-left:80px;margin-top:-5px;display:block;background-color:#FFBB42;height:40px;}	
+.timeline-date ul li dl span{display:block;font-size:16px;padding:0px 10px 0px 30px;color:#fff;line-height:40px;}

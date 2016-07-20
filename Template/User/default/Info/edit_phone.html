@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>会员中心 --<Zml:title /></title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+<script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+<script src="__PUBLIC__/js/pintuer.js"></script>
+<script src="__PUBLIC__/js/respond.js"></script>
+<script src="__LIB__/layer/layer.js"></script>
+</head>
+<body style="background:#e7e8eb">
+<include file="Home@default/Public/header" />
+<include file="./header" />
+<div class="x12 padding border-bottom height-big">
+	<h5>基本信息</h5>	
+</div>
+<div class="clearfix"></div>
+<div class="padding  x12">
+	<div class="border x12">
+	<div class="bg padding ">手机号修改</div>	
+		<div class="height-large padding border-bottom x12">
+			<span class="text-gray x2">验证码</span>
+			<span class="x9">
+				<input type="text" name="code" class="input input-auto box-shadow-none" size="10" />
+				<input type="button" class="button  border text-small" onclick="getyzm(this)" value="获取验证码" />
+			</span>
+			
+		</div>
+		<div class="height-large padding border-bottom x12">
+			<span class="text-gray x2">新的手机号</span>
+			<span class="x9">
+				<input type="text" name="phone" class="input input-auto box-shadow-none" size="23" />
+			</span>
+			
+		</div>
+		<div class="height-large padding x12 text-center">
+			<button class="button bg-red padding-large-left padding-large-right" onclick="save(this)">保存 </button>
+		</div>
+		
+		
+	</div>
+</div>
+</div>
+</div>
+</div>
+<div class="clearfix"></div>
+
+<include file="Home@default/Public/foot" />
+<script>
+		var wait=60; 
+		function time(o) { 
+			if (wait == 0) { 
+			o.removeAttribute("disabled");	
+			o.value="获取验证码"; 
+			wait = 30; 
+			} else { 
+			o.setAttribute("disabled", true); 
+			o.value="重新发送(" + wait + ")"; 
+			wait--; 
+			setTimeout(function() { 
+			time(o) 
+			}, 
+			1000) 
+			} 
+		} 
+		function getyzm(d){		
+				$.post('__MODULE__/Info/sendsms.html',function(e){
+					if(e.status==1){
+						layer.msg(e.info);
+						time(d)
+						$(d).text('验证已发送至现有手机上');
+					}else{
+						layer.msg(e.info)
+					}
+				})
+		}
+		function save(d){
+			var code=$("input[name='code']");
+			var phone=$("input[name='phone']");	
+			if(phone.val()==''){
+				layer.tips('手机号不能为空', phone);
+				phone.focus();
+				return false
+			}
+			var telReg = !!phone.val().match(/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/);
+			if(telReg == false){
+				layer.tips('手机号格式不对', phone);
+				phone.focus();
+				return false
+			}
+			if(code.val()==''){
+				layer.tips('验证码不能为空', code);
+				code.focus();
+				return false
+			}
+			$.post('__SELF__',{phone:phone.val(),code:code.val()},function(e){
+				if(e.status==1){
+					layer.open({
+						content: e.info,
+						yes: function(index){
+					        window.location.href= '__ROOT__/User/Info'
+					    }
+					}
+				);
+				}else{
+					layer.msg(e.info);
+				}			
+			})
+		}
+	</script>
+</body>
+</html>

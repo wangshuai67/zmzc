@@ -1,0 +1,70 @@
+
+<include file="Public/header" />
+<div class="x12 padding border-bottom height-big">
+	<h5>文件上传配置</h5>
+	
+</div>
+<div class="clearfix"></div>
+<div class="padding  x12 ">
+	<div class="border x12 margin-bottom">
+	<div class="bg padding ">上传基本配置</div>
+		<div class="height-large padding border-bottom  x12">
+			<span class="text-gray x2">文件上传目录</span>
+			<span class="x9" ><span id="UPLOAD_PATH">{$Think.config.UPLOAD_PATH}</span><span class="text-gray padding-left">如果目录不存在需要手动创建目录,确保目录有可写权限</span></span>
+			<a href="###" class="text-blue"  onclick="edit_d('UPLOAD_PATH','{$Think.config.UPLOAD_PATH}')">修改</a>
+		</div>
+		<div class="height-large padding  x12">
+			<span class="text-gray x2">允许上传的文件类型</span>
+			<span class="x9" ><span id="UPLOAD_TYPE">{$Think.config.UPLOAD_TYPE}</span><span class="text-gray padding-left">不在范围内的文件将不会被上传，半角逗号隔开</span></span>
+			<a href="###" class="text-blue"  onclick="edit_d('UPLOAD_TYPE','{$Think.config.UPLOAD_TYPE}')">修改</a>
+		</div>
+	</div>
+	<div class="clearfix"></div>
+</div>
+ <script>
+ function edit_d(name,v){
+	
+	 layer.prompt({title: '编辑修改', formType: 2,value:v}, function(text){
+			edit(name,text);
+	 });
+	
+ }
+ 
+ function edit(name,d){	
+	
+	var UPLOAD_PATH='{$Think.config.UPLOAD_PATH}';
+	var UPLOAD_TYPE='{$Think.config.UPLOAD_TYPE}';
+	;
+	if(name=='UPLOAD_PATH'){
+		UPLOAD_PATH=d;
+	}
+	if(name=='UPLOAD_TYPE'){
+		UPLOAD_TYPE=d;
+	}
+	
+	$.post(
+		'__MODULE__/System/uploadset',
+		{
+			
+			UPLOAD_TYPE:UPLOAD_TYPE,		
+			UPLOAD_PATH:UPLOAD_PATH,		
+		},function(e){
+			if(e.status==0){
+				layer.open({
+					content:e.info,
+					btn:['好的']
+				})
+			}else{
+				$("#"+name).text(d);
+				window.location.reload();
+			}
+		}
+	
+	)
+	
+ }
+
+
+ </script>
+</body>
+</html>

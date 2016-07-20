@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <title>资金明细 - <Zml:title /></title>
+    <meta name="keywords" content="<Zml:keywords />"/>
+    <meta name="description" content="<Zml:description />"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+    <script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+    <script src="__PUBLIC__/js/pintuer.js"></script>
+    <script src="__PUBLIC__/js/respond.js"></script>
+    <script src="__PUBLIC__/js/goTop.js"></script>
+    <script src="__PUBLIC__/js/TouchSlide.1.1.source.js"></script>
+    <!-- <script src="__PUBLIC__/lib/layer_m/layer.m.js"></script>-->
+    <script src="__PUBLIC__/lib/layer/layer.js"></script>
+</head>
+<body class="x12 bg">
+    <div class="bg-red text-white padding text-center">
+        <span class="win-back icon-mail-reply float-left"></span>
+        资金明细
+    </div>
+    <div class="margin-top">
+        <zmllist name="lists" id="zml">
+            <div class="x12 text-small border-bottom padding-small bg-white height">
+                <span class="x12">{$zml.title}
+                    <span class="float-right padding-right text-red"><if condition="$zml['type'] eq 1">进账<else />出账</if>￥<if condition="$zml['type'] eq 1">+<else />-</if>{$zml.money}</span>
+                </span>
+                <span class="x6 text-gray">{$zml.create_time|date="Y-m-d h:i:s",###}</span>
+                <span class="x12 text-gray">备注：{$zml.remark} </span>
+            </div>
+        </zmllist>
+	</div>
+    <div class="x12 text-center padding"><ul class="pagination border-red pagination-small">{$page}</ul></div>
+	<include file="Public:foot" />
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <title>$zml.title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+  <script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+  <script src="__PUBLIC__/js/pintuer.js"></script>
+  <script src="__PUBLIC__/js/respond.js"></script>
+  <script src="__PUBLIC__/lib/layer/layer.js"></script>
+  <script type="text/javascript" src="__PUBLIC__/lib/validform/Validform.min.js"></script>
+  <link href="__PUBLIC__/lib/validform/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+  <div class="container">
+    <div class="x12 padding">
+
+      <form class="form" action="#" method="post" autocomplete="off">
+        <label class="label">分类名称：</label>
+        <input type="text" class="input box-shadow-none radius-none" id="name" value="{$info.name}" datatype="*" placeholder="分类名称" />
+
+        <label class="label">上级分类：</label>
+        <select class="input box-shadow-none radius-none" id="pid">
+          <option value="0" <if condition="$info['pid'] eq 0 ">selected</if>>无</option>
+          <volist name="lists" id="vo">
+          <option value="{$vo.id}" <if condition="$info['pid'] eq $vo['id'] ">selected</if>>{$vo.name}</option>
+          </volist>
+        </select>
+
+        <label class="label">分类排序：</label>
+        <input type="number" min="0" class="input box-shadow-none radius-none" id="sort" value="{$info.sort|default='0'}" datatype="*" />
+
+        <label class="label">分页条数：</label>
+        <input type="number" min="1" class="input box-shadow-none radius-none" id="limit" value="{$info.limit|default='10'}" datatype="*" />
+		
+		<label class="label">SEO标题 ：</label>
+        <input type="text" class="input box-shadow-none radius-none" id="title"  value="{$info.title}" datatype="*" />
+	
+		<label class="label">SEO关键词 ：</label>
+        <input type="text" class="input box-shadow-none radius-none" id="keywords"  value="{$info.keywords}" datatype="*" />
+		
+		<label class="label">SEO描述 ：</label>
+        <input type="text" class="input box-shadow-none radius-none" id="description"  value="{$info.description}" datatype="*" />
+
+        <div class="margin-big-top">
+        <button class="btn button bg-sub" type="button" onclick="save()"> 确 定</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+<script type="text/javascript">
+function save(){
+	var name=$("#name").val();
+	if(name.length < 1){
+		layer.tips('标题不能为空','#name');
+		$("#name").focus()
+		return false
+	}
+      $.ajax({
+        type: 'POST',
+        url: '__SELF__',
+        data: {
+          name: $("#name").val(),
+          pid: $("#pid").val(),
+          sort:$("#sort").val(),
+          limit:$("#limit").val(),
+          description:$("#description").val(),
+          title:$("#title").val(),
+          keywords:$("#keywords").val(),
+        },
+        dataType: "json",
+        beforeSend: function() {
+          layer.load(2, {
+            shade: [0.1, '#fff']
+          })
+        },
+        success: function(data) {
+          layer.closeAll();
+          if (data.status == 1) {
+            parent.layer.msg(data.info, {
+              shift: 2,
+              time: 1000,
+              shade: [0.1, '#000'],
+              end: function() {
+                parent.location.reload()
+              }
+            })
+          } else {
+            parent.layer.alert(data.info, {
+              icon: 5
+            })
+          }
+        }
+      });
+ }
+</script>
+</body>
+</html>

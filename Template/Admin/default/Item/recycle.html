@@ -1,0 +1,153 @@
+<include file="Public/header" />
+
+<zmllist name="list" id="zml">
+	<div class="x12 bg padding">
+		<div class="x3 padding  bg-white"><img src="{$zml.cover_img}" alt="{$zml.name}" class="x12" height="94"></div>
+		<div class="x9 bg padding bg-white border-left height-big">
+			<div><span class="x6 text-big"><a href="{:U('Home/Item/info',array('id'=>$zml['id']))}">{$zml.name}</a></span>
+			<span class="x6 text-right"><button class="button radius-none bg-red" target="_blank">{$zml.progress_name}</button>
+			<button onClick="lead({$zml.id},this)" class="button radius-none bg-yellow margin-left">设置领投规则</button>
+			</div>
+			<div class="x12">
+				<a href="{:U('Admin/Item/item_add',array('itemid'=>$zml['id']))}" class="button button-small bg-sub radius-none">修改</a>
+				<a href="javascript:void(0)" onclick="delitem('{:U('Admin/Item/item_del',array('id'=>$zml['id'],'isdel'=>0))}')" class="radius-none button button-small bg-sub">还原</a>
+				<a href="javascript:void(0)" onclick="iframe('{:U('Admin/Item/item_editstatus',array('itemid'=>$zml['id']))}')" class="button button-small radius-none bg-green "> 修改项目状态</a>
+				<a href="javascript:void(0)" onclick="iframe('__MODULE__/Item/interview/itemid/{$zml.id}')" class="button button-small bg-sub radius-none">{$zml.interview} 位约谈</a>
+				<a href="javascript:void(0)"   onclick="iframe('{:U('Admin/Lead/index',array('itemid'=>$zml['id']))}')" class="button button-small bg-sub radius-none">{$zml.countlead} 位领投</a>
+			
+			</div>
+			<div class="x12 text-gray">
+				<div class="x6">
+					<span class="x12">融资总额: <span class="text-red">￥{$zml.raising_money}</span>
+					已筹款：<span class="text-red">￥{$zml.countmoney}</span>
+					</span>
+				</div>
+				<div class="x6">
+					<span class="x6">投资方占比: <span class="text-red">{$zml.investment_rate}%</span></span>
+					<span class="x6">项目发布者: <span class="text-red"><a href="__MODULE__/Item/index/uin/{$zml.uin}" class="text-sub">{$zml.user_name}</a></span></span>
+				</div>
+			</div>
+		</div>
+	</div>
+</zmllist>
+<div class="x12 text-center padding"><ul class="pagination border-red pagination-small">{$page}</ul></div>
+</div>
+</div>
+</div>
+<div class="clearfix"></div>
+<script>
+	function delitem(url){
+		layer.confirm('你确定要还原该项目吗？', {
+		btn: ['确定','取消'] //按钮
+	}, function(){
+		$.get(url,function(ret){
+			layer.msg(ret.info, {shift: 2});
+			if(ret.status==1){
+				window.location.reload();
+			}
+		})
+	}, function(){
+		layer.msg('你选择了取消', {shift: 6});
+	});
+	}
+	function iframe(url){
+		 layer.open({
+        type: 2,
+        title: '提示',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['1000px', '570px'],
+        content: url
+      });
+	}
+	function open_l(itemid,info){
+		layer.open({
+		    type: 1,
+		    title:'设置领投规则',
+		    skin: 'layui-layer-rim', //加上边框
+		    area: ['600px', '450px'], //宽高
+		    content: '<form class="form padding-big">'+
+		    '<input type="hidden" name="itemid" value="'+itemid+'"/>'+
+			'<div class="form-group">'+
+				'<div class="label"><label for="manage_money">领投人管理服务费</label></div>'+
+				'<div class="field field-icon-right">'+
+					'<input type="text" class="input" id="manage_money" name="manage_money" value="'+info.manage_money+'" size="30" placeholder="纯数字" />'+
+				'</div>'+
+			'</div>'+
+			'<div class="form-group">'+
+				'<div class="label"><label for="num">领投人数量</label></div>'+
+				'<div class="field field-icon-right">'+
+					'<input type="text" class="input" id="num" name="num" size="30" value="'+info.num+'" placeholder="纯数字" />'+
+				'</div>'+
+			'</div>'+
+			'<div class="form-group">'+
+				'<div class="label"><label for="do_what">领投人义务</label></div>'+
+				'<div class="field field-icon-right">'+
+					'<textarea type="text" rows="5" class="input" id="do_what" name="do_what"  placeholder="领头人需要做什么">'+info.do_what+'</textarea>'+
+				'</div>'+
+			'</div>'+
+			'<div class="form-button"><button class="button radius-none bg-red" type="button" onClick="sub(this)">提交</button></div>'+
+			'</form>'
+		});
+	}
+	
+	//弹出设置层
+	function lead(itemid,b){
+		$.get("__MODULE__/Lead/lead_list/itemid/"+itemid, function(d){
+			if (d.status==1) {
+				open_l(itemid,d.info);
+			}else{
+				layer.open({
+				    content: d.info
+				});  
+			}
+		});
+	}
+	function sub(a){
+		var itemid = $('input[name="itemid"]');
+		var manage_money = $('input[name="manage_money"]');
+		var num = $('input[name="num"]');
+		var do_what = $('textarea[name="do_what"]');
+		if(manage_money.val()=='' || isNaN(manage_money.val())){
+			layer.tips("纯数字填写","#manage_money",{
+			    tips: 1
+			})
+			manage_money.focus();
+			return false
+		}
+		if(num.val()=='' || isNaN(num.val())){
+			layer.tips("纯数字填写","#num",{
+			    tips: 1
+			})
+			num.focus();
+			return false
+		}
+		if(do_what.val()==''){
+			layer.tips("不能为空","#do_what",{
+			    tips: 1
+			})
+			do_what.focus();
+			return false
+		}
+		$.post("__MODULE__/Lead/sub_lead", {
+		 	itemid: itemid.val(),
+		 	manage_money: manage_money.val(),
+		 	num: num.val(),
+		 	do_what: do_what.val(),
+		},function(d){
+			if (d.status == 1) {
+				layer.open({
+				    content: d.info,
+				    yes: function(index){
+				    	layer.close(index); //一般设定yes回调，必须进行手工关闭
+				    	window.location.reload();
+				    }
+				}); 
+			}else{
+				alert(d.info);
+			}
+	   	});
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>资金管理 - 会员中心<Zml:title /></title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+<script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+<script src="__PUBLIC__/js/pintuer.js"></script>
+<script src="__PUBLIC__/js/respond.js"></script>
+<script src="__LIB__layer/layer.js"></script>
+<script src="__LIB__laydate/laydate.js"></script>
+</head>
+<body style="background:#e7e8eb">
+<include file="Home@default/Public/header" />
+<include file="./header" />
+<div class="x12 padding border-bottom">
+	<h1>资金明细</h1>
+</div>
+<div class="x12 padding">
+	<div class="x12 text-center padding-top padding-bottom border-bottom border-top margin-top">
+		<a href="{:U('User/Funds/money_details')}" class='x1 border-right <if condition="!$_GET['type']"> text-red</if>'>全部</a>
+		<a href="{:U('User/Funds/money_details',array('type'=>1))}" class='x1 border-right <if condition="$_GET['type'] eq 1">text-red</if>'>进账</a>
+		<a href="{:U('User/Funds/money_details',array('type'=>2))}" class='x1 border-right <if condition="$_GET['type'] eq 2">text-red</if>'>出账</a>
+	</div>
+</div>
+<zmllist name="lists" id="zml">
+	<div class="x12 bg padding">
+		<div class="x12 bg-white padding height-big">
+			<div class="x7">
+				<span class="float-left padding-big-left padding-big-right  border-right">{$zml.title}</span>
+				<span class="float-left padding-big-left padding-big-right text-small border-right">类型：
+					<if condition="$zml['type'] eq 1">进账<else />出账</if></span>
+				<span class="float-left padding-big-left padding-big-right text-small border-right"><span class="text-red"><if condition="$zml['type'] eq 1">+<else />-</if>{$zml.money}</span></span>
+				<div class="x12 text-gray bg-white border-top text-small"><span class="text padding-left">备注：</span>{$zml.remark}</div>
+			</div>
+
+			<div class="x5">
+				<div class="x8">
+					<span class="x12 padding-big-left padding-big-right  text-small border-right">创建时间：{$zml.create_time|date="Y-m-d h:i:s",###}</span>
+					<span class="x12 padding-big-left padding-big-right  text-small border-right"><if condition="$zml['update_time'] ">更新时间：{$zml.update_time|date="Y-m-d h:i:s",###}</if></span>
+				</div>
+				<div class="x4 text-center" style="margin-top:16px">
+					<if condition="$zml['status'] eq 1">
+						<span class="text-big text-red">成功</span>
+						<else />
+						<span class="text-big text-red">处理中...</span>
+					</if>
+				</div>
+			</div>
+		</div>
+	</div>
+</zmllist>
+<div class="x12 text-center padding"><ul class="pagination border-red pagination-small">{$page}</ul></div>
+</div>
+</div>
+</div>
+<div class="clearfix"></div>
+<include file="Home@default/Public/foot" />
+</body>
+</html>

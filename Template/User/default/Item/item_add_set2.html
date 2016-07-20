@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>会员中心 --<Zml:title /></title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+<script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+<script src="__PUBLIC__/js/respond.js"></script>
+<script src="__LIB__layer/layer.js"></script>
+</head>
+<body style="background:#e7e8eb">
+<include file="Home@default/Public/header" />
+<include file="./header" />
+
+<div class="padding border-bottom">
+	<div class="step">
+	 <div class="step-bar complete" style="width:25%;"><span class="step-point icon-check"></span><span class="step-text">基本资料</span></span></div>
+	 <div class="step-bar active" style="width:25%;"><span class="step-point">2</span><span class="step-text">股权设置</span></div>
+	 <div class="step-bar" style="width:25%;"><span class="step-point">3</span><span class="step-text">项目详情</span></div>
+	 <div class="step-bar" style="width:25%;"><span class="step-point">4</span><span class="step-text">发起人信息</span></div>
+	</div>
+</div>
+<div class="clearfix"></div>
+<div class="padding  x12">
+	<div class="border x12">
+	<div class="bg padding "><strong>股权设置</strong></div>
+		<div class="height-large padding border-bottom x12">
+			<span class="text-gray x3 text-right padding-right"><span class="text-red">*</span> 融资总额 :</span>
+			<span class="x9">
+				<input type="text" name="raising_money" value="{$item.raising_money}" oninput="count(this)" class="input input-auto box-shadow-none radius-none" /> 元 
+				(<span class="text-red">* 含项目方出资 </span>)
+			</span>
+		</div>
+		<div class="height-large padding border-bottom x12">
+			<span class="text-gray x3 text-right padding-right"><span class="text-red">*</span>  项目方出资 :</span>
+			<span class="x9">
+				<input type="text" name="has_investment" oninput="count(this)" value="{$item.has_investment}" placeholder="如：100000" class="text-small input input-auto box-shadow-none radius-none" size="20" /> 元
+				(<span class="text-red">* 项目方出资金额 如：已投入金额或即将投入 </span>)
+			</span>
+		</div>
+		<div class="height-large padding border-bottom x12">
+			<span class="text-gray x3 text-right padding-right"><span class="text-red">*</span>  认购份数 :</span>
+			<span class="x9">
+				<input type="text" name="amount" oninput="count(this)" value="{$item.amount}" placeholder="如：199" class="text-small input input-auto box-shadow-none radius-none" size="20" /> 份
+				(<span class="text-red">*认购份数=投资人出资总额/最低投资金额 </span>)
+			</span>
+		</div>
+		<div class="height-large padding border-bottom x12">
+			<span class="text-gray x3 text-right padding-right"><span class="text-red">*</span>  单笔投入最低投资金额 :</span>
+			<span class="x9">
+				<input type="text" name="lowest_money" placeholder="" value="{$item.lowest_money}"  class="text-small  input input-auto box-shadow-none radius-none" readonly size="20" /> 元
+				(<span class="text-red">* 投资人出资总额 /认购份数 </span>)
+			</span>
+		</div>
+		<div class="height-large padding border-bottom x12">
+			<span class="text-gray x3 text-right padding-right"><span class="text-red">*</span>  项目方收益比例 :</span>
+			<span class="x2">
+				<input type="text" name="project_rate"  value="{$item.project_rate}" placeholder="如：51" class="text-small input input-auto box-shadow-none radius-none" size="15" /> %
+				
+			</span>
+			<span class="text-gray x2 text-right padding-right"><span class="text-red">*</span>  投资方收益比例 :</span>
+			<span class="x2">
+				<input type="text" name="investment_rate" value="{$item.investment_rate}"  placeholder="" class="text-small input input-auto box-shadow-none radius-none" readonly size="15" /> %
+				
+			</span>
+		</div>
+		<div class="x9 padding text-center">
+			<a href="__MODULE__/Item/item_add/itemid/{$itemid}" class="button button-big bg-red" >上一步</a>
+			<a href="javascript:void(0)" class="button button-big bg-red" onclick="save(this)">下一步</a>
+		</div>
+		
+	</div>
+</div>
+</div>
+</div>
+</div>
+<div class="clearfix"></div>
+
+<include file="Home@default/Public/foot" />
+<script>
+	
+		$("input[name='project_rate']").bind('input propertychange', function() {
+			var rates=$(this).val();
+			if(rates > 0 && rates < 100){
+				var investment_rate=(100 - rates).toFixed(2);			
+				$("input[name='investment_rate']").val(investment_rate);
+			 }else{
+				$(this).val('')
+				$("input[name='investment_rate']").val('');
+			 }
+		})
+	
+	function count(d){
+		var rai=$('input[name="raising_money"]');
+		var has=$('input[name="has_investment"]');
+		var amo=$('input[name="amount"]');
+		var raising=$(rai).val();
+		var has_money=$(has).val();
+		var qty=$(amo).val();
+		$(rai).bind('input propertychange', function() {
+			 raising=$(this).val();			
+		})
+		$(has).bind('input propertychange', function() {
+			 has_money=$(this).val();			
+		})
+		$(amo).bind('input propertychange', function() {
+			qty=$(this).val();			
+		})
+		
+		
+		
+		if( raising > 0 && has_money > 0 && qty > 0){
+			var lowest_money=(raising - has_money) / qty;		
+			$("input[name='lowest_money']").val(lowest_money.toFixed(2));
+		}
+		
+	}
+ function save(d){
+	var raising_money=$('input[name="raising_money"]');
+	var has_investment=$('input[name="has_investment"]');
+	var amount=$('input[name="amount"]');
+	var lowest_money=$('input[name="lowest_money"]');
+	var project_rate=$('input[name="project_rate"]');
+	var investment_rate=$('input[name="investment_rate"]');
+	if(raising_money.val()==''){
+		layer.tips('融资总额不能为空',raising_money);
+		raising_money.focus();
+		return false
+	}
+	if(has_investment.val()==''){
+		layer.tips('项目方出资不能为空',has_investment);
+		has_investment.focus();
+		return false
+	}
+	if(amount.val()==''){
+		layer.tips('认购份数不能为空',amount);
+		amount.focus();
+		return false
+	}
+	if(lowest_money.val()==''){
+		layer.tips('单笔投入最低投资金额不能为空',lowest_money);
+		lowest_money.focus();
+		return false
+	}
+	if(project_rate.val()==''){
+		layer.tips('项目方收益比例不能为空',project_rate);
+		project_rate.focus();
+		return false
+	}
+	if(investment_rate.val()==''){
+		layer.tips('投资方收益比例不能为空',investment_rate);
+		investment_rate.focus();
+		return false
+	}
+	$.post('__MODULE__/Item/item_in_two',{
+		raising_money:raising_money.val(),
+		has_investment:has_investment.val(),
+		amount:amount.val(),
+		lowest_money:lowest_money.val(),
+		project_rate:project_rate.val(),
+		investment_rate:investment_rate.val(),
+		id:{$itemid},
+		
+	},function(data){
+		if(data.status==1){
+			window.location.href=data.url	
+		}else{
+			layer.msg(data.info);
+		}
+	
+	})
+	
+	
+ }
+
+</script>
+
+
+</body>
+</html>

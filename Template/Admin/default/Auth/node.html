@@ -1,0 +1,52 @@
+ <include file="Public/header" />
+
+      <div class="x12 padding-top padding border-bottom">
+		<h3 class="x3">节点管理</h3>
+		<button class="float-right bg-sub button icon-plus" type="button" onclick="node_add()"> 创建节点</button>
+      </div>
+     
+	  <div class="x12 padding">
+		<div class="collapse">
+		 <volist name="list" id="vo">
+		  <div class="panel">
+			<div class="panel-head bg"><span class="float-right"><a href="javascript:void(0)" onclick="editnode({$vo.id},this)" class="text-blue">编辑</a> </span> {$vo.title}</div>
+			<div class="panel-body">
+				<ul class="list-group">
+					<volist name="vo.sub" id="v">
+						<li><span class="float-right"><a href="javascript:void(0)" onclick="editnode({$v.id},this)" class="text-blue">编辑</a> </span>{$v.title}</li>
+					</volist>
+				</ul>
+			</div>
+		  </div>
+		  </volist>
+		</div>
+	  </div>
+    </div>
+	<script>
+		function node_add(){
+			layer.open({
+				type: 2,
+				area: ['700px', '360px'],
+				fix: true, //不固定
+				maxmin: true,
+				title:'创建节点',
+				content: '__MODULE__/Auth/node_add'
+			});
+		}
+	//编辑节点
+	function editnode(id){	
+		layer.open({
+			type: 2,
+			area: ['700px', '360px'],
+			fix: true, //不固定
+			maxmin: true,
+			title:'创建节点',
+			content: '__MODULE__/Auth/node_edit/id/'+id
+		});
+	}
+	</script>
+  	<!-- 底部 -->
+    <include file="foot" />
+  </div>
+</body>
+</html>

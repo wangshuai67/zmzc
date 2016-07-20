@@ -1,0 +1,68 @@
+ <include file="Public/header" />
+
+      <div class="x12 padding-top padding border-bottom">
+		<h3 class="x3">管理员管理</h3>
+		<button class="button float-right bg-sub icon-plus" type="button" onclick="show('.adduser')"> 新增管理员</button>
+      </div>
+     
+	  <div class="x12 padding">
+		<table class="table table-bordered text-small">
+			<tr class="bg">
+				<td>账号</td>
+				<td>昵称</td>
+				<td>邮箱</td>
+				<td>最后登录时间</td>
+				<td>登录次数</td>
+				<td>用户组</td>
+				<td>状态</td>
+				<td>操作</td>
+			</tr>
+			<volist name="list" id="vo">
+			<tr>
+				<td>{$vo.username}</td>
+				<td>{$vo.nickname}</td>
+				<td>{$vo.email}</td>
+				<td>{:date('Y-m-d h:i',$vo['last_login_time'])}</td>
+				<td>{$vo.login_count}</td>
+				<td>{$vo.group_title}</td>
+				<td><if condition="$vo['status'] eq '1'">正常<else />锁定</if></td>
+				<td><a href="javascript:void(0)" onclick="user_edit({$vo.id})">修改</a></td>
+			</tr>
+			</volist>
+		</table>
+		<div class="padding text-center margin-top">
+		<ul class="pagination pagination-group">
+		 {$page}
+		</ul>
+
+		</div>
+	  </div>
+    </div>
+	<script>
+		function user_edit(id){
+			layer.open({
+				type: 2,
+				area: ['700px', '360px'],
+				fix: true, //不固定
+				maxmin: true,
+				title:'编辑管理员',
+				content: '__MODULE__/Auth/user_edit/id/'+id
+			});
+		}
+		function show(c){
+			layer.open({
+				type: 2,
+				title:'新增管理员',
+				area: ['700px', '360px'],
+				fix: true, //不固定
+				maxmin: true,
+				content: '__MODULE__/Auth/user_add'
+			});
+		}
+	
+	</script>
+  	<!-- 底部 -->
+    <include file="foot" />
+  </div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>领投管理 - 会员中心-<Zml:title /></title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+<script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+<script src="__PUBLIC__/js/pintuer.js"></script>
+<script src="__PUBLIC__/js/respond.js"></script>
+<script src="__LIB__layer/layer.js"></script>
+<script src="__LIB__laydate/laydate.js"></script>
+<script type="text/javascript" charset="utf-8" src="__LIB__ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__LIB__ueditor/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="__LIB__ueditor/lang/zh-cn/zh-cn.js"></script>
+</head>
+<body style="background:#e7e8eb">
+<include file="Home@default/Public/header" />
+<include file="./header" />
+<div class="x12 padding border-bottom">
+	<h1>投资管理</h1>
+</div>
+<include file="top" />
+<zmllist name="lead" id="zml">
+	<div class="x12 bg padding">
+		<div class="x3 padding  bg-white"><img src="{$zml.cover_img}" alt="{$zml.item_name}" class="x12" height="94"></div>
+		<div class="x9 bg padding bg-white border-left height-big">
+			<div>
+				<span class="x8 text-big">{$zml.item_name} <span class="text-small text-gray">现有{$zml.count}位领投人</span><span class="text-small float-right text-gray padding-left">申请人：<span class="text-red">{$zml.user_name}</span></span></span>
+				<span class="x4 text-right">
+					<!-- <button class="button radius-none bg-red">了解更多</button> -->
+					<if condition="$zml['status'] eq '0'">
+						<button onClick="lead('{$zml.id}','{$zml.user_name}','{$zml.itemid}','{$zml.item_name}')" class="button radius-none bg-yellow margin-left">设置为领投</button>
+						<else />
+						<span class="text-red">已审核</span>
+					</if>
+				</span>
+			</div>
+			<div class="x12 text-gray text-small  border-top" style="height: 60px;">
+				{$zml.user_desc}
+			</div>
+		</div>
+	</div>
+</zmllist>
+<div class="x12 text-center padding"><ul class="pagination border-red pagination-small">{$page}</ul></div>
+</div>
+</div>
+</div>
+<div class="clearfix"></div>
+<include file="Home@default/Public/foot" />
+<script>
+</script>
+</body>
+</html>

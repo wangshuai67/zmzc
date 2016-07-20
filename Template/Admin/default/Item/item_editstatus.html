@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <title>$zml.title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+  <script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+  <script src="__PUBLIC__/js/pintuer.js"></script>
+  <script src="__PUBLIC__/js/respond.js"></script>
+  <script src="__PUBLIC__/lib/layer/layer.js"></script>
+  <script type="text/javascript" src="__PUBLIC__/lib/validform/Validform.min.js"></script>
+  <link href="__PUBLIC__/lib/validform/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+  <div class="container">
+    <div class="x12 padding">
+		<h4 class="bg padding">当前项目状态 : <span class="text-red text-small">
+			<if condition="$item['status'] eq '0'">未审核<else />审核通过</if>
+			</span>
+			<span class="padding-large-left text-small">
+			修改为：
+			<if condition="$item['status'] eq '0'">
+				<a href="javascript:void(0)" onclick="changsta({$item['id']},1)" class="button radius-none bg-sub">审核通过</a>
+			<else />
+				<a href="javascript:void(0)" onclick="changsta({$item['id']},0)" class="button radius-none bg-sub">取消审核</a>
+			</if>
+			</span>
+			<span class="text-gray text-small">
+				修改为不审核网站前台则不会显示
+			</span>
+		</h4>
+		<div class="clearfix"></div>
+		<h2 class="padding bg margin-top margin-bottom">项目进度 
+		<if condition="$item['progress'] NEQ '8'">
+		<a href="javascript:void(0)" onclick="changsta({$item['id']},{$item['progress'] + 1},'pro')" class="button radius-none bg-sub">进入下一个状态</a>
+		</if>
+		</h2>
+		
+		<div class="step">
+			<volist name="progress" id="vo">
+			 <div class="step-bar  <if condition="$vo['id'] LT $item['progress']">complete<elseif condition="$vo['id'] eq $item['progress']" />active</if>" style="width:11%;"><span class="step-point icon-check"></span><span class="step-text">{$vo.name}</span></span></div>
+			</volist>
+		</div>
+		
+    </div>
+  </div>
+<script type="text/javascript">
+
+function changsta(id,sta,pro){
+	layer.confirm('你确定要改变项目状态吗', {
+    btn: ['确定','取消'] //按钮
+}, function(){
+     $.ajax({
+        type: 'POST',
+        url: '__SELF__',
+        data: {
+          id:id,
+		  status:sta,
+		  progress:pro
+        },
+        dataType: "json",
+        beforeSend: function() {
+          layer.load(2, {
+            shade: [0.1, '#fff']
+          })
+        },
+        success: function(data) {
+          layer.closeAll();
+          if (data.status == 1) {
+            parent.layer.msg(data.info, {
+              shift: 2,
+              time: 1000,
+              shade: [0.1, '#000'],
+              end: function() {
+                parent.location.reload()
+              }
+            })
+          } else {
+            parent.layer.alert(data.info, {
+              icon: 5
+            })
+          }
+        }
+      });
+}, function(){
+    layer.msg('你选择了取消', {shift: 6});
+});
+	
+}
+     
+   
+</script>
+</body>
+</html>

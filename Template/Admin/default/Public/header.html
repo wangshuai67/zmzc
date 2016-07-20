@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <title>芝麻乐众筹管理后台</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+  <script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+  <script src="__PUBLIC__/js/pintuer.js"></script>
+  <script src="__PUBLIC__/js/respond.js"></script>
+  <script src="__PUBLIC__/lib/layer/layer.js"></script>
+</head>
+<body style="background:#fafafa;">
+	<!-- 导航 -->
+
+<div class="container-layout  bg-white border-bottom margin-bottom">
+  <div class="container padding-big-top padding-big-bottom">
+    <div class="x12">
+      <div class="x2 ">
+        <a href="javascript:void(0)">
+          <span class=" text-red" style="font-size: 32px;">芝麻乐</span><span class="text-gray padding-left">众筹管理后台</span>
+        </a>
+      </div>
+		<div class="x8  text-right float-right">			<div class="navbar-text navbar-right hidden-s">
+			 <span class="padding-right"> 欢迎登录 {:session('admin_username')} ( {$group_name}  ) </span>	
+			 <a href="javascript:void(0)" onclick="my_edit()" class="button button-small icon-cog bg-blue"> 设置</a>
+			  <a href="__ROOT__/" target="_blank"  class="button button-small icon-link bg-blue"> 访问网站</a>
+			 <button type="button" onclick="delcahe()" class="button button-small icon-power-off bg-blue"> 删除缓存</button>			 <button type="button" id="loginout" class="button button-small icon-power-off bg-blue"> 退出系统</button></div>
+		</div>
+      </div>
+    </div>
+  </div>
+<script>	function delcahe(){		$.get("__MODULE__/Delcahe/index",function(ret){			layer.msg(ret.info,{shift:2})		})	}
+	function my_edit(id){	
+		layer.open({
+			type: 2,
+			area: ['700px', '360px'],
+			fix: true, //不固定
+			maxmin: true,
+			title:'用户设置',
+			content: '__MODULE__/Auth/my_edit'
+		});
+	}
+</script>
+ <div class="container">
+	<div class="border x12">
+    <div class="x2 bg-white border-right">	
+	<div class="x12" style="min-height:800px">
+	<div class="x12 border-bottom padding-bottom">
+		<volist name="menu" id="vo">
+		<a href="{:U($vo['name'])}" class="button  padding-top padding-big-left border-none radius-none padding-bottom x12 <if condition="'__SELF__' eq '/'.$vo['name'].'.html'">bg-sub</if>"> {$vo.title} <span class="float-right icon-angle-right"></span></a>
+		<volist name="vo.sub_menu" id="v">
+			<a href="{:U($v['name'])}" class="padding-large-left button x12  border-none radius-none <if condition="'__SELF__' eq '/'.$v['name'].'.html'">bg-sub</if>"><span class="padding-left">{$v.title}<span class="float-right icon-angle-right"></span></span></a>
+		</volist>
+		</volist>
+	</div>
+	<div class="clearfix"></div>
+		<div class="padding text-center text-small text-gray">
+			<a href="http://www.zhimale.com" class=" text-gray padding-right">帮助中心</a>|
+			<a href="http://www.zhimale.com" class="text-gray padding-left">联系我们</a>
+			<span class="text-gray padding-top x12">ZHIMALE 版权所有</span>			<span class="text-gray padding-top x12">版本号 <php>echo ZHIMALE_V</php></span>
+		</div> 
+	</div>
+            
+    </div>
+    <div class="x10 bg-white" style="min-height:680px;">
+<script>
+
+  $(function(){
+    $('#loginout').click(function(){
+      layer.confirm('确定要退出吗？', {icon: 3},function(){
+        parent.layer.msg('退出成功!', {
+          shift: 2,
+          time: 1000,
+          shade: [0.1,'#000'],
+          end: function(){
+            window.location.href = '{:U('/Admin/Public/logout')}';
+          }
+        });
+      });
+     });
+  });
+
+  //全局配置
+layer.config({
+    extend: [
+        'extend/layer.ext.js' 
+    ]
+});
+</script>

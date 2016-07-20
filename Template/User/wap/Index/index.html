@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <title>会员中心 - <Zml:title /></title>
+    <meta name="keywords" content="<Zml:keywords />"/>
+    <meta name="description" content="<Zml:description />"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+    <script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+    <script src="__PUBLIC__/js/pintuer.js"></script>
+    <script src="__PUBLIC__/js/respond.js"></script>
+    <script src="__PUBLIC__/js/goTop.js"></script>
+    <script src="__PUBLIC__/js/TouchSlide.1.1.source.js"></script>
+    <!-- <script src="__PUBLIC__/lib/layer_m/layer.m.js"></script>-->
+    <script src="__PUBLIC__/lib/layer/layer.js"></script>
+</head>
+<body class="x12 bg">
+    <div class="x12 bg-white padding-small margin-top">
+        <span class="x3">
+            <img src="<if condition="$user['header']">{:cut_image($user['header'],'50','50')}<else />__IMG__user-logo.jpg</if>" class="header radius-circle"  width="50" height="50">
+        </span>
+        <span class="x9">
+            <span class="x6 margin-top">{$phone}</span>
+            <span class="x6 margin-top text-small text-right text-red">￥ {$money}元</span>
+        </span>
+    </div>
+    <a href="{:U('Investor/collect_item')}" class="x12 bg-white padding-small margin-top">
+        <span class="x11 padding text-small"><i class="icon-unlink text-yellow"></i> 我收藏的项目</span>
+        <span class="x1 padding icon-angle-right"></span>
+    </a>
+    <a href="{:U('Investor/with_item')}" class="x12 bg-white padding-small border-top">
+        <span class="x11 padding text-small"><i class="icon-plus text-yellow"></i> 我投资的项目</span>
+        <span class="x1 padding icon-angle-right"></span>
+    </a>
+    <a href="{:U('Investor/interview_item')}" class="x12 bg-white padding-small border-top">
+        <span class="x11 padding text-small"><i class="icon-bullhorn text-yellow"></i> 我约谈的项目</span>
+        <span class="x1 padding icon-angle-right"></span>
+    </a>
+    <a href="{:U('Investor/lead')}" class="x12 bg-white padding-small border-top">
+        <span class="x11 padding text-small"><i class="icon-magnet text-yellow"></i> 我领投的项目</span>
+        <span class="x1 padding icon-angle-right"></span>
+    </a>
+    <a href="{:U('Funds/money_details')}" class="x12 bg-white padding-small margin-top">
+        <span class="x11 padding text-small"><i class="icon-cny text-yellow"></i> 资金明细</span>
+        <span class="x1 padding icon-angle-right"></span>
+    </a>
+    <a href="{:U('Dolog/index')}" class="x12 bg-white padding-small margin-top">
+        <span class="x11 padding text-small"><i class="icon-bell-o text-yellow"></i> 消息中心<span class="badge bg-dot float-right">{:doLog()}条未读</span></span>
+        <span class="x1 padding icon-angle-right"></span>
+    </a>
+    <a href="{:U('User/Login/logout')}" class="x12 bg-white padding-small border-top">
+        <span class="x11 padding text-small"><i class="icon-power-off text-yellow"></i> 退出登录</span>
+        <span class="x1 padding icon-angle-right"></span>
+    </a>
+    <!-- 底部导航 -->
+    <include file="Public:foot" />
+</body>
+</html>

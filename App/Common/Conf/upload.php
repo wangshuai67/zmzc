@@ -1,0 +1,1 @@
+<?php	return array ( 'UPLOAD_TYPE' => 'jpg,png,gif,bmp,ppt,doc,jpeg,docx,pdf,zip,rar', 'UPLOAD_PATH' => './uploads/', );?>

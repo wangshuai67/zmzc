@@ -1,0 +1,197 @@
+
+
+<include file="Public/header" />
+
+<div class="x12 padding border-bottom height-big">
+
+	<h5>短信平台</h5>
+
+	
+
+</div>
+
+<div class="clearfix"></div>
+
+<div class="padding  x12 ">
+
+	<div class="border x12 margin-bottom">
+
+	<div class="bg padding ">短信平台配置</div>
+
+		<div class="height-large padding border-bottom x12">
+
+			<span class="text-gray x2 padding height">短信平台</span>
+
+			<span class="x5" >
+
+				<a href="https://sms.zhimale.com/" target="_blank">芝麻乐短信平台</a>
+
+				<span class="text-gray padding-left"></span>
+
+			</span>
+
+			<span class="x1" >
+
+				<button class="config button border-sub">配置</button>
+
+			</span>
+
+		</div>
+
+		<div class="height-large padding border-bottom x12">
+
+			<span class="text-gray x2 padding height">API KEY</span>
+
+			<span class="x5" >
+
+				{$Think.config.ZHIMALE.SMS_API_KEY}
+
+				<span class="text-gray padding-left"></span>
+
+			</span>
+
+		</div>
+
+		<div class="height-large padding border-bottom x12">
+
+			<span class="text-gray x2 padding height">短信签名</span>
+
+			<span class="x5" >
+
+				{$Think.config.ZHIMALE.SMS_SIGN}
+
+				<span class="text-gray padding-left"></span>
+
+			</span>
+
+		</div>
+
+		<div class="height-large padding border-bottom x12">
+
+			<span class="text-gray x2 padding height">短信余额</span>
+
+			<span class="x5" >
+
+				<if condition="$status_info.code eq 0">
+
+					<span class="text-red">{$status_info.deposit}</span> 条
+
+				<else />
+
+				<span class="text-gray">短信平台配置不正确，代码 {$status_info.code}</span>
+
+				</if>
+
+			</span>
+
+			<if condition="$status_info.code eq 0">
+
+			<span class="x2" >
+
+				<button class="sms_test button border-sub">短信测试</button>
+
+			</span>
+
+			</if>
+
+		</div>
+
+	</div>
+
+	<div class="clearfix"></div>
+
+</div>
+
+<script type="text/javascript">
+
+$(function(){
+
+    $('.config').click(function(){
+
+        var type = $(this).attr('type');
+
+        var title = $(this).attr('title');
+
+        layer.open({
+
+			type: 2,
+
+			area: ['500px', '250px'],
+
+			fix: true,
+
+			title:'短信平台配置',
+
+			content: "{:U('Admin/System/sms_config')}"
+
+		});
+
+    });
+
+
+
+    $('.sms_test').click(function(){
+
+    	layer.prompt({title: '请输入手机号码', formType: 3,value:''}, function(phone){
+
+    		$.ajax({
+
+                type: 'POST',
+
+                url: '{:U('Admin/System/sms')}',
+
+                data:{
+
+                    phone:phone
+
+                },
+
+                dataType: "json",
+
+
+
+                success: function(data){
+
+                    if (data.status == 1) {
+
+                        parent.layer.msg(data.info, {
+
+                            shift: 2,
+
+                            time: 1000,
+
+                            shade: [0.1,'#000'],
+
+                            end: function(){
+
+                                parent.layer.alert(data.message,{title:'测试内容',icon: 1});
+
+                            }
+
+                        });
+
+                    }else if (data.status == 0) {
+
+                        parent.layer.alert(data.info,{icon: 5});
+
+                    }else{
+
+                        parent.layer.alert('请求失败...',{icon: 2});
+
+                    }
+
+                },
+
+            });
+
+    	});
+
+    });
+
+})
+
+</script>
+
+</body>
+
+</html>

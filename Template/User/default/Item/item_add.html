@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>会员中心 --<Zml:title /></title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+<script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+<script src="__PUBLIC__/js/pintuer.js"></script>
+<script src="__PUBLIC__/js/respond.js"></script>
+<script src="__LIB__layer/layer.js"></script>
+<script src="__LIB__laydate/laydate.js"></script>
+<script type="text/javascript" charset="utf-8" src="__LIB__ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__LIB__ueditor/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="__LIB__ueditor/lang/zh-cn/zh-cn.js"></script>
+
+</head>
+<body style="background:#e7e8eb">
+<include file="Home@default/Public/header" />
+<include file="./header" />
+
+<div class="padding border-bottom">
+	<div class="step">
+	 <div class="step-bar active" style="width:25%;"><span class="step-point icon-check"></span><span class="step-text">基本资料</span></span></div>
+	 <div class="step-bar " style="width:25%;"><span class="step-point">2</span><span class="step-text">股权设置</span></div>
+	 <div class="step-bar" style="width:25%;"><span class="step-point">3</span><span class="step-text">项目详情</span></div>
+	 <div class="step-bar" style="width:25%;"><span class="step-point">4</span><span class="step-text">发起人信息</span></div>
+	</div>
+</div>
+<div class="clearfix"></div>
+<div class="padding  x12">
+	<div class="border x12">
+	<div class="bg padding "><strong>发起项目</strong></div>	
+		<div class="height-large padding border-bottom x12">
+			<span class="text-gray x2"><span class="text-red">*</span> 行业类别</span>
+			<span class="x9">
+				<select name="cid[]" class="input input-auto box-shadow-none radius-none"  id="first" onchange="loadRegion('first',2,'second','__MODULE__/Item/get_category');">
+				<option value="" >选择栏目</option>
+				<volist name="cate" id="vo">
+					<option value="{$vo.id}" <if condition="$vo['id'] eq $nowcate[0]['id']">selected</if>  >{$vo.name}</option>
+				</volist>
+				</select>
+				<select name="cid[]" class="input input-auto box-shadow-none radius-none" id="second"  onchange="loadRegion('second',3,'third','__MODULE__/Item/get_category');">
+					<if condition="$nowcate[1]['id']">
+					<option value="{$nowcate[1]['id']}">{$nowcate[1]['name']}</option>
+					<else />
+						<option value="0">无</option>
+					</if>
+				</select>
+			</span>
+			
+		</div>
+		<div class="height-large padding border-bottom x12">
+			<span class="text-gray x2"><span class="text-red">*</span> 标签</span>
+			<span class="x9" >
+			  <div class="field">
+				<div class="button-group checkbox">
+				<volist name="tags" id="vo">
+				  <label class="button radius-none margin-small <if condition="in_array($vo['id'],$tagsid)">active</if>" onclick="choosetags(this)">
+					<input name="tags[]" value="{$vo.id}" <if condition="in_array($vo['id'],$tagsid)">checked="checked"</if> type="checkbox" /><span class="icon icon-check text-red"></span> {$vo.name}
+				  </label>
+				</volist> 
+				</div>
+			  </div>
+			</span>
+			
+		</div>
+		<div class="height-large padding border-bottom x12">
+			<span class="text-gray x2"><span class="text-red">*</span> 项目名称</span>
+			<span class="x9">
+				<input type="text" name="name" value="{$item.name}" class="input box-shadow-none radius-none" />
+			</span>
+		</div>
+		<div class="height-large padding border-bottom x12">
+			<span class="text-gray x2"><span class="text-red">*</span> 项目简介</span>
+			<span class="x9">
+				<input type="text" name="desc" value="{$item.desc}" class="input box-shadow-none radius-none" />
+			</span>
+		</div>
+		<div class="height-large padding border-bottom x12">
+			<span class="text-gray x2"><span class="text-red">*</span>  筹资金额</span>
+			<span class="x9">
+				<input type="text" name="raising_money" value="{$item.raising_money}" placeholder="如：100000" class="text-small input input-auto box-shadow-none radius-none" size="20" /> 元
+			</span>
+		</div>
+		
+		<div class="height-large padding border-bottom x12">
+			<span class="text-gray x2"><span class="text-red">*</span>  筹资结束时间</span>
+			<span class="x9">
+				<input type="text" name="end_time" placeholder="请选择" value="<if condition="$item['end_time']">{:date('Y-m-d H:i:s',$item['end_time'])}</if>"  onclick="laydate({istime: true, min: laydate.now(), format: 'YYYY-MM-DD hh:mm:ss'})" class="text-small input input-auto box-shadow-none radius-none" size="20" /> 
+			</span>
+		</div>
+		
+		<div class="x12 padding text-center">
+			<a href="javascript:void(0)" class="button button-big bg-red" onclick="add_item(this)">下一步</a>
+		</div>
+		
+	</div>
+</div>
+</div>
+</div>
+</div>
+<div class="clearfix"></div>
+
+<include file="Home@default/Public/foot" />
+<script>
+function choosetags(d){
+	var c=$("input[name='tags[]']:checked");
+	if(c.length > 3){
+		$(d).find('input[name="tags[]"]').attr('checked',false);
+		layer.msg('最多可以选择3个标签');
+	}
+}
+function add_item(d){
+	var cids=$("select[name='cid[]']");
+	var tags=$("input[name='tags[]']:checked");
+	var name=$("input[name='name']");
+	var raising_money=$("input[name='raising_money']");
+	var desc=$("input[name='desc']");
+	var end_time=$("input[name='end_time']");
+	var cid=new Array();
+	var tag=new Array();
+	cids.each(function(){
+		cid.push($(this).val());	
+		
+	})
+	if(cids.val()==''){
+		layer.tips('选择一个行业类别',cids);
+		cids.focus()
+		return false
+	}
+	if(desc.val()==''){
+		layer.tips('简介还是要一个吧',desc);
+		desc.focus();
+		return false
+	}
+	//取CID最后一个不为0的id值
+	var last = cid[cid.length - 1];
+	if(last=='0'){
+		last = cid[cid.length - 2];
+		if(last=='0'){
+			last = cid[cid.length - 3];
+		}
+	}
+	tags.each(function(){
+		tag.push($(this).val());
+	})
+	if(name.val()==''){
+		layer.tips('项目名不能为空',name);
+		name.focus()
+		return false
+	}
+	if(raising_money.val()==''){
+		layer.tips('筹资金额是一个数字喔',raising_money);
+		raising_money.focus()
+		return false
+	}
+	if(end_time.val()==''){
+		layer.tips(' 筹资结束时间不能为空',end_time);
+		end_time.focus()
+		return false
+	}
+		<if condition="$itemid">
+		var type={$itemid};
+		<else />
+		var type="add";
+		</if>
+	
+	$.post('__MODULE__/Item/item_in',{
+		name:name.val(),
+		cid:last,
+		tag:tag.join(','),
+		raising_money:raising_money.val(),
+		end_time:end_time.val(),
+		type:type,
+		desc:desc.val(),
+	},function(data){
+		if(data.status==1){
+			window.location.href=data.url	
+		}else{
+			console.log(data)
+			layer.msg(data.info)
+		}
+	})
+}
+</script>
+<script src="__PUBLIC__/lib/region.js"></script>
+</body>
+</html>

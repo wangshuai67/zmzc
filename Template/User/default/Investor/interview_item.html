@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>约谈的项目 - 会员中心<Zml:title /></title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+<script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+<script src="__PUBLIC__/js/pintuer.js"></script>
+<script src="__PUBLIC__/js/respond.js"></script>
+<script src="__LIB__layer/layer.js"></script>
+<script src="__LIB__laydate/laydate.js"></script>
+<script type="text/javascript" charset="utf-8" src="__LIB__ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__LIB__ueditor/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="__LIB__ueditor/lang/zh-cn/zh-cn.js"></script>
+</head>
+<body style="background:#e7e8eb">
+<include file="Home@default/Public/header" />
+<include file="./header" />
+<div class="x12 padding border-bottom">
+	<h1>投资管理</h1>
+</div>
+<include file="top" />
+<zmllist name="interview" id="zml">
+	<div class="x12 bg padding">
+		<div class="x3 padding  bg-white"><img src="{$zml.cover_img}" alt="{$zml.item_name}" class="x12" height="94"></div>
+		<div class="x9 bg padding bg-white border-left height-big">
+			<div><span class="x6 text-big"><a href="{:U('Home/Item/Info',array('id'=>$zml['id']))}">{$zml.item_name}</a></span><span class="x6 text-right"><button class="button radius-none bg-red">{$zml.progress_name}中</button><button class="button radius-none bg-yellow margin-left">{$zml.status}</button></span></div>
+			<div class="x12 text-gray">
+				<div class="x6">
+					<span class="x12">融资总额: <span class="text-red">￥{$zml.raising_money}</span></span>
+				</div>
+				<div class="x6">
+					<span class="x12">投资方占比: <span class="text-red">{$zml.investment_rate}%</span></span>
+				</div>
+			</div>
+			<div class="x12 text-gray">
+				<div class="x6">
+					<span class="x12">最低投资: <span class="text-red">￥{$zml.lowest_money}</span></span>
+				</div>
+				<div class="x6">
+					<span class="x12">已完成: <span class="text-red">{$zml.investment_rate}%</span></span>
+				</div>
+			</div>
+		</div>
+	</div>
+</zmllist>
+<div class="x12 text-center padding"><ul class="pagination border-red pagination-small">{$page}</ul></div>
+</div>
+</div>
+</div>
+<div class="clearfix"></div>
+<include file="Home@default/Public/foot" />
+<script>
+</script>
+</body>
+</html>

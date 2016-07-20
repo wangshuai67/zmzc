@@ -1,0 +1,122 @@
+
+  <include file="Public/header" />
+ 
+    <div class="x12 padding-top padding border-bottom">
+		<h3 class="x3">导航管理</h3>
+		<a href="javascript:void(0)" class="float-right bg-sub button icon-plus" type="button" onclick="iframe('{:U('Admin/Nav/nav_edit')}')"> 添加导航</a>
+      </div>
+      <div class="x12 padding">
+        <table class="table table-bordered table-hover">
+          <tbody>
+            <tr>
+             <th>标题</th>
+			 <th>链接</th>
+			 <th>导航位置</th>
+			 <th>排序</th>
+			 <th>状态</th>
+			 <th>操作</th>
+            </tr>
+
+            <volist name="lists" id="vo">
+            <tr id="tr{$vo.id}" class="height">
+             
+              <td>{$vo.name}</td>
+              <td>{$vo.url}</td>
+              <td><if condition="$vo['type'] eq '2'">底部导航<elseif condition="$vo['type'] eq '1'"/>中间导航<else />头部导航</if></td>
+              <td>{$vo.sort}</td>
+              <td><if condition="$vo['status'] eq '1'">正常<else />隐藏</if></td>
+              <td>
+                <button class="del button button-small bg-sub" onclick="del({$vo.id})">删除</button>
+                <a href="javascript:void(0)" class=" button button-small bg-sub" onclick="iframe('{:U('Admin/Nav/nav_edit',array('id'=>$vo['id']))}')" >修改</a>
+              </td>
+            </tr>
+			<volist name="vo.sub" id="v">
+            <tr id="tr{$v.id}" class="height">
+             
+              <td> ├──　　{$v.name}</td>
+              <td>{$v.url}</td>
+              <td><if condition="$v['type'] eq '2'">底部导航<elseif condition="$v['type'] eq '1'"/>中间导航<else />头部导航</if></td>
+              <td>{$v.sort}</td>
+              <td><if condition="$v['status'] eq '1'">正常<else />隐藏</if></td>
+              <td>
+                <button class="del button button-small bg-sub" onclick="del({$v.id})">删除</button>
+                <a href="javascript:void(0)"  onclick="iframe('{:U('Admin/Nav/nav_edit',array('id'=>$v['id']))}')"  class=" button button-small bg-sub" >修改</a>
+              </td>
+            </tr>
+            </volist>
+            </volist>
+
+          </tbody>
+        </table>
+		<div class="margin-big-top">
+          <ul class="pagination pagination-group">
+            {$page}
+          </ul>
+        </div>
+        </div>
+
+        
+
+
+      </div>
+    </div>
+  	<!-- 底部 -->
+    <include file="foot" />
+  </div>
+<script type="text/javascript">
+
+function iframe(url){
+		layer.open({
+        type: 2,
+        title: '提示',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['1000px', '370px'],
+        content: url
+      });
+	}
+
+    //删除
+function del(id){  
+layer.confirm('确定要删除吗？', {
+    btn: ['确定','点错了'] //按钮
+}, function(){
+   $.ajax({
+			type: 'POST',
+			url: '{:U('/Admin/Nav/nav_del')}',
+			data:{
+				id:id
+			},
+			dataType: "json",
+			beforeSend: function() {
+			  layer.closeAll();
+			  layer.load(2,{shade: [0.1,'#000']});
+			},
+			success: function(data){
+			  layer.closeAll();
+				if (data.status == 1) {
+					
+					layer.msg(data.info, {
+						shift: 2,
+						time: 1000,
+						shade: [0.1,'#000'],
+						end: function(){
+							$("#tr"+id).remove();
+						}
+					});
+				}else{
+					layer.alert(data.info,{icon: 5});
+				}
+			}
+		});
+}, function(){
+    layer.msg('你选择了取消', {shift: 6});
+});
+
+		
+}
+   
+
+</script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+
+<include file="Public/header" />
+<div class="x12 padding border-bottom height-big">
+	<h5>支付配置</h5>
+	
+</div>
+<div class="clearfix"></div>
+<div class="padding  x12 ">
+	<div class="border x12 margin-bottom">
+	<div class="bg padding ">支付接口配置</div>
+		<zmllist name="lists" id="zml">
+		<div class="height-large padding border-bottom x12">
+			<span class="text-gray x2 padding height"><img src="{$zml.ico}" width="23"> {$zml.title}</span>
+			<span class="x8" >
+				<if condition="$zml.status eq 1">
+					<if condition="$zml.partner ">
+						{$zml.partner}
+						<else />
+						{$zml.business}
+					</if>
+				</if>
+				<span class="text-gray padding-left"></span>
+			</span>
+
+			<span class="x1" >
+				<if condition="$zml.status eq 1">
+					<button class="config button border-mix" title="{$zml.title}" type="{$zml.type}">配置</button>
+				</if>
+			</span>
+			
+			<if condition="$zml.status eq 1">
+				<button class="status button border-dot" title="{$zml.title}接口卸载" status="uninstall" type="{$zml.type}">卸载</button>
+				<else />
+				<button class="status button border-sub" title="{$zml.title}接口安装" status="install" type="{$zml.type}">安装</button>
+			</if>
+		</div>
+		</zmllist>
+	</div>
+	<div class="clearfix"></div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $('.config').click(function(){
+        var type = $(this).attr('type');
+        var title = $(this).attr('title');
+        layer.open({
+			type: 2,
+			area: ['500px', '380px'],
+			fix: true,
+			//maxmin: true,
+			title:title+'配置',
+			content: '__MODULE__/System/payment_set/type/'+type
+		});
+    });
+})
+
+$(function(){
+	$('.status').click(function(){
+		var title = $(this).attr('title');
+		var type = $(this).attr('type');
+	    var status = $(this).attr('status');
+		parent.layer.confirm('确定进行'+title+'？', {icon: 3},function(){
+	        layer.open({
+				type: 2,
+				area: ['500px', '350px'],
+				fix: true,
+				//maxmin: true,
+				title:title,
+				content: '__MODULE__/System/payment_status/type/'+type+'/status/'+status
+			});
+	    });
+    });
+})
+</script>
+</body>
+</html>

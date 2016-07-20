@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <title>{$zml.title} - <Zml:title /></title>
+    <meta name="keywords" content="<Zml:keywords />"/>
+    <meta name="description" content="<Zml:description />"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+    <link rel="stylesheet" href="__THEME__/default/css/zml.css">
+    <script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+    <script src="__PUBLIC__/js/pintuer.js"></script>
+    <script src="__PUBLIC__/js/respond.js"></script>
+    <script src="__PUBLIC__/js/TouchSlide.1.1.source.js"></script>
+    <script src="__PUBLIC__/layer_m/layer.m.js"></script>
+</head>
+<body>
+    <div class="x12">
+        <style>
+        .tab .tab-nav li {line-height:30px;border-radius:inherit;padding: 8px 40px;}
+        .tab .tab-nav li {background-color: #fff;border-radius: inherit;}
+        .tab .tab-nav .active{background-color: #EA544A; }
+        .tab .tab-nav .active a{color: #fff;}
+        </style>
+        <div class="tab">
+            <div class="x12">
+                <span class="x12 bg-red text-white padding text-center height-big"><h5>全新互联网金融模式——人人都可成为股东。</h5></span>
+                <span class="text-small text-gray bg-white padding float-right" style="margin-top:9px">发布时间：{$zml.time|date="Y-m-d",###}</span>
+            </div>
+            <div class="x12 tab-body bg-white">
+                <!-- 新闻列表 -->
+                <div class="tab-panel active" id="tab-a">
+
+                    <!-- 新闻内页 -->
+                    <div class="x12 padding">
+                        {$zml.content}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <include file="Public/foot" />
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>会员中心</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+    <script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+    <script src="__PUBLIC__/js/pintuer.js"></script>
+    <script src="__PUBLIC__/js/respond.js"></script>
+    <script src="__LIB__/layer/layer.js"></script>
+</head>
+<body style="background:#e7e8eb">
+    <include file="Home@default/Public/header" />
+    <include file="./header" />
+    <div class="padding">
+     
+        <div class="x12 padding-bottom border-bottom">
+            <div class="x6 padding-large">
+                <h2>我的余额</h2>
+                <div class="padding text-bold text-red" style="font-size:50px;">￥{$money}元</div>
+            </div>
+            <div class="x6 padding-large">
+                <a href="__MODULE__/Item/item_add.html" class="button margin-top bg-red radius-none"> 发布项目</a>
+                <a href="__MODULE__/Withdraw" class="button bg-blue radius-none">提现</a>
+                <a href="__MODULE__/Prepaid" class="button bg-red radius-none">充值</a>
+            </div>
+
+        </div>
+        <div class="x12 padding">
+            <div class="x12">
+                <div id="countoption" class=" x12 padding-big" style="height:300px"></div>
+            </div>
+            <div class="x12">
+                <div id="money" class=" x12 padding-big" style="height:300px"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<div class="clearfix"></div>
+<include file="Home@default/Public/foot" />
+<script src="__PUBLIC__/lib/echarts/echarts.js"></script>
+<script type="text/javascript">
+// 路径配置
+require.config({
+    paths: {
+        echarts: '__PUBLIC__/lib/echarts'
+    }
+});
+// 使用
+require(
+    [
+        'echarts',
+        'echarts/chart/pie', // 使用饼图
+        'echarts/chart/funnel', // 使用漏斗
+        'echarts/chart/line', // 使用折线
+        'echarts/chart/bar', // 使用柱状
+    ],
+function (ec) {
+// 实例化图表
+var count = ec.init(document.getElementById('countoption'));
+var money = ec.init(document.getElementById('money'));
+// 投资统计
+var countoption = {
+        title : {
+            text: '投资统计',
+            subtext: '本月'
+        },
+        tooltip : {
+            trigger: 'axis'
+        },
+        legend: {
+            data:['收藏','约谈','投资']
+        },
+        toolbox: {
+            show : true,
+            feature : {
+                //mark : {show: true},
+                dataView : {show: true, readOnly: false},
+                magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                // restore : {show: true},
+                saveAsImage : {show: true}
+            }
+        },
+        calculable : true,
+        xAxis : [
+            {
+                type : 'category',
+                boundaryGap : false,
+                data : [{$count.data}]
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value'
+            }
+        ],
+        series : [
+            {
+                name:'收藏',
+                type:'line',
+                smooth:true,
+                itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                data:[{$count.collect_item}]
+            },
+            {
+                name:'约谈',
+                type:'line',
+                smooth:true,
+                itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                data:[{$count.with_item}]
+            },
+            {
+                name:'投资',
+                type:'line',
+                smooth:true,
+                itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                data:[{$count.interview}]
+            }
+        ]
+    };
+    //资金统计
+    var moneyoption = {
+        title : {
+            text: '财务统计',
+            subtext: '本月'
+        },
+        tooltip : {
+            trigger: 'axis'
+        },
+        legend: {
+            data:['进账','出账']
+        },
+        toolbox: {
+            show : true,
+            feature : {
+                //mark : {show: true},
+                dataView : {show: true, readOnly: false},
+                magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                //restore : {show: true},
+                saveAsImage : {show: true}
+            }
+        },
+        calculable : true,
+        xAxis : [
+            {
+                type : 'category',
+                boundaryGap : false,
+                data : [{$count.data}]
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value'
+            }
+        ],
+        series : [
+            {
+                name:'进账',
+                type:'line',
+                stack: '总量',
+                data:[{$count.inmoney}]
+            },
+            {
+                name:'出账',
+                type:'line',
+                stack: '总量',
+                data:[{$count.outmoney}]
+            },
+        ]
+    };
+    // 为echarts对象加载数据 
+    count.setOption(countoption); 
+    money.setOption(moneyoption); 
+    }
+);
+</script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>我的认证 - 会员中心<Zml:title /></title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+<script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+<script src="__PUBLIC__/js/pintuer.js"></script>
+<script src="__PUBLIC__/js/respond.js"></script>
+<script src="__LIB__layer/layer.js"></script>
+</head>
+<body style="background:#e7e8eb">
+<include file="Home@default/Public/header" />
+<include file="./header" />
+<div class="x12 padding border-bottom">
+	<h1>我的认证</h1>
+</div>
+<div class="x12 bg padding">
+	<div class="x12 bg-white padding-big height-big">
+		<span class="x12 text-red text-center text-big">{$status}</span>
+		<span class="x12 text-center text-small">承诺：身份证信息仅用于投资后成立有限合伙企业名称预核准的证明材料！</span>
+	</div>
+	<div class="x12 bg-white padding-big height-big margin-top">
+		<span class="x12 text-small">身份证照片拍摄要求：</span>
+		<span class="x12 text-small">
+			1. 拍摄的身份证照片必须是白底，且文字内容清晰，建议拍摄时把身份证放在一张白纸上； </br>
+			2. 在光线充足的地方进行拍照并避免光线直射，防止身份证反光； </br>
+			3. 拍摄画面必须把身份证的四角拍摄进去，保证画面内显示出身份证边角全部（画面有手或其它物品的遮挡均属无效照片）；  </br>
+			4. 拍照时要中心点垂直拍摄，尽量避免画面有严重的透视变形。</br>
+		</span>
+	</div>
+	<if condition="$attest['status'] neq '1'">
+		<div class="x12 bg-white padding-big height-big margin-top">
+			<div class=" padding x12">
+				<span class="text-gray x2 text-right padding-right"><span class="text-red">*</span> 身份证 :</span>
+				<span class="x5 padding">	
+					<span>
+						<a class="button bg-blue button-small radius-none x2 text-center input-file" href="javascript:void(0);">+ 上传身份证正面<input size="100" name="card_positives" id="card_positive" type="file" /></a>
+						<span class="text-small  text-gray padding-big-left" id="card_positive_tips">允许上传：png，jpg格式</span>
+					</span>
+					<div class="x12 padding border positive">
+						<if condition="$attest['card_positive']">
+							<img src="{$attest.card_positive}" width="100" height="100">
+							<input type="hidden" name="card_positive" value="{$attest.card_positive}">
+						</if>
+					</div>
+				</span>
+				<span class="x5 padding">	
+					<span>
+						<a class="button bg-blue button-small radius-none x2 text-center input-file" href="javascript:void(0);">+ 上传身份证反面<input size="100" name="card_negatives" id="card_negative" type="file" /></a>
+						<span class="text-small  text-gray padding-big-left">允许上传：png，jpg格式</span>
+					</span>
+					<div class="x12 padding border negative">
+						<if condition="$attest['card_negative']">
+							<img src="{$attest.card_negative}"   width="100" height="100">
+							<input type="hidden" name="card_negative" value="{$attest.card_negative}">
+						</if>
+					</div>
+				</span>
+			</div>
+			<div class="x12 text-center"><button onClick="card_in()" class="button bg-yellow radius-none">提交认证</button></div>
+		</div>
+	</if>
+</div>
+<div class="x12 text-center padding"><ul class="pagination border-red pagination-small">{$page}</ul></div>
+</div>
+</div>
+</div>
+<div class="clearfix"></div>
+<include file="Home@default/Public/foot" />
+<script src="__PUBLIC__/js/form.js"></script>
+<script>
+//提交审核
+	function card_in(){
+		var card_positive=$('input[name="card_positive"]'); //封面图片
+		var card_negative=$('input[name="card_negative"]'); //封面图片
+
+		if(card_positive.length == 0){
+			slideFunction('card_positive')
+			layer.tips("请上传正面","#card_positive_tips", {
+				tips: [1, '#3595CC'],
+				time: 4000
+			})
+			return false
+		}
+		if(card_negative.length == 0){
+			slideFunction('card_negative')
+			layer.tips("请上传反面","#card_negative_tips", {
+				tips: [1, '#3595CC'],
+				time: 4000
+			})
+			return false
+		}
+	    $.post("__MODULE__/Attest/card_in", {
+		 	card_positive: card_positive.val(),
+		 	card_negative: card_negative.val(),
+		},function(d){
+			if (d.status == 1) {
+				layer.open({
+				    content: d.info,
+				    yes: function(index){
+				        window.location.reload()
+				    }
+				});  
+			}else{
+				layer.open({ content: d.info,});
+			}
+	   	});
+	}
+//上传身份证正面
+    $(function () {
+      	$("#card_positive").wrap("<form id='myupload' action='/Admin/Upload/index' method='post' enctype='multipart/form-data'></form>");
+      	$("#card_positive").change(function(){
+      		$("#myupload").ajaxSubmit({
+      			dataType:  'json',
+      			beforeSend: function() {
+      				var index = layer.load(1, {
+					shade: [0.1,'#fff'] //0.1透明度的白色背景
+				});
+      			},
+      			success: function(data) {
+
+      				if(data.status==0){
+      					layer.open({
+      						content:data.info,
+      						btn:['好的'],
+      						yes:function(){
+      							layer.closeAll()
+      						}
+      					})
+      				}else{
+      					var img = data.url;
+      					var filename = data.original;
+      					var filehtml='<img src="'+img+'" alt="'+filename+'" width="100" height="100"><input type="hidden" name="card_positive" value="'+img+'"/>'
+      					$(".positive").html(filehtml)
+      					$(".positive").removeClass('hidden');
+      					layer.closeAll()
+      				}
+      			}
+      		});
+      	});
+    });
+//上传身份证反面
+    $(function () {
+      	$("#card_negative").wrap("<form id='mynegative' action='/Admin/Upload/index' method='post' enctype='multipart/form-data'></form>");
+      	$("#card_negative").change(function(){
+      		$("#mynegative").ajaxSubmit({
+      			dataType:  'json',
+      			beforeSend: function() {
+      				var index = layer.load(1, {
+					shade: [0.1,'#fff'] //0.1透明度的白色背景
+				});
+      			},
+      			success: function(data) {
+
+      				if(data.status==0){
+      					layer.open({
+      						content:data.info,
+      						btn:['好的'],
+      						yes:function(){
+      							layer.closeAll()
+      						}
+      					})
+      				}else{
+      					var img = data.url;
+      					var filename = data.original;
+      					var filehtml='<img src="'+img+'" alt="'+filename+'" width="100" height="100"><input type="hidden" name="card_negative" value="'+img+'"/>'
+      					$(".negative").html(filehtml)
+      					$(".negative").removeClass('hidden');
+      					layer.closeAll()
+      				}
+      			}
+      		});
+      	});
+    });
+</script>
+</body>
+</html>

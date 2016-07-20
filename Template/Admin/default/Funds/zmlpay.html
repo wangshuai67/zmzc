@@ -1,0 +1,115 @@
+<include file="Public/header" />
+<div class="x12 padding border-bottom">
+	<h2 class="x2">平台转账</h2>
+	<span class="x10">
+		本功能可以用于如：线下支付、项目付款等操作;转到用户账号中，用户再通过提现方式提取到银行
+	</span>
+</div>
+<div class="padding x10 x2-move">
+	<form method="post" class="form-x">
+		<div class="form-group">
+			<div class="field">
+				<span>收款账号 : </span>
+				<input type="text" name="uin" readonly class="input input-auto radius-none box-shadow-none" />
+				<button class="button bg-sub radius-none" type="button" onclick="getuser()">获取用户列表</button>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="field">
+				<span>转账金额 : </span>
+				<input type="text" name="money" class="input input-auto radius-none box-shadow-none" /> 元
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="field">
+				<span>转账理由 : </span>
+				<input type="text" name="remark" size="50" class="input input-auto radius-none box-shadow-none" />
+			</div>
+		</div>
+		<div class="form-group">	
+			<div class="field padding-top">
+				<span>短信通知对方 : </span>
+				<label><input type="radio" name="sms" value="1" checked /> 是</label>
+				<label><input type="radio" name="sms" value="0" /> 否</label>
+			</div>
+		</div>
+		<div class="text-center x6">
+			<button class="button bg-dot radius-none" type="button" onclick="save()">确认转账</button>
+		</div>
+	</form>
+</div>
+<script>
+
+function getuser(){
+      layer.open({
+        type: 2,
+        title: '选择用户',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['1000px', '570px'],
+        content: '{:U("Admin/User/index/getuser/ok")}'
+   
+    });
+}
+function save(){
+	var uin=$("input[name='uin']");
+	var money=$("input[name='money']");
+	var remark=$("input[name='remark']");
+	var is_sms=$("input[name='sms']:checked").val();
+	if(uin.val() < 1){
+		layer.tips("请选择一位用户",uin);
+		return false
+	}
+	if(money.val() < 100){
+		layer.tips("请输入转账金额",money);
+		money.focus();
+		return false
+	}
+	if(remark.val().length < 1){
+		layer.tips("请输入转账理由",remark);
+		remark.focus();
+		return false
+	}
+
+	layer.confirm('确定要转'+money.val()+'元给用户ID:'+uin.val()+'的用户吗？不可撤回!', function(){
+		$.ajax({
+            type: 'POST',
+            url: '__SELF__',
+            data:{
+                uin:uin.val(),
+                money:money.val(),
+                remark:remark.val(),
+                is_sms:is_sms
+            },
+            dataType: "json",
+            beforeSend:function(){
+				parent.layer.load(2,{shade: [0.1,'#fff']});
+			},
+            success: function(data){
+            	parent.layer.closeAll();
+                if (data.status == 1) {
+                    parent.layer.msg(data.info, {
+                        shift: 2,
+                        time: 1000,
+                        shade: [0.1,'#000'],
+                        end: function(){
+                            parent.location.reload();
+                        }
+                    });
+                }else if (data.status == 0) {
+                    parent.layer.alert(data.info,{icon: 5});
+                }else{
+                    parent.layer.alert('请求失败...',{icon: 2});
+                }
+            },
+            error: function(){
+            	parent.layer.closeAll();
+            	parent.layer.alert('请求失败...',{icon: 2});
+            }
+        });
+	});
+
+}
+</script>
+</body>
+</html>

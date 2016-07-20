@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>银行卡管理 - 会员中心<Zml:title /></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+	<script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+	<script src="__PUBLIC__/js/pintuer.js"></script>
+	<script src="__PUBLIC__/js/respond.js"></script>
+	<script src="__LIB__layer/layer.js"></script>
+</head>
+<body style="background:#e7e8eb">
+	<include file="Home@default/Public/header" />
+	<include file="./header" />
+	<div class="x12 padding border-bottom">
+		<h1>银行卡管理</h1>
+	</div>
+	<div class="x12 padding">
+		<button onClick="add_bank(this)"  class="button bg-red float-right radius-none">新增银行卡</button>
+	</div>
+	<zmllist name="bank" id="zml">
+		<div class="x12 bg padding">
+			<div class="x12 bg-white padding height-big">
+				<span class="float-left padding-big-left padding-big-right text-small border-right">姓名：{$zml.name}</span>
+				<span class="float-left padding-big-left padding-big-right  text-small border-right">卡号：{$zml.card}</span>
+				<span class="float-left padding-big-left padding-big-right  text-small border-right">卡类型：{$zml.type}</span>
+				<span class="float-left padding-big-left padding-big-right  text-small border-right">开户行：{$zml.bank}</span>
+			</div>
+		</div>
+	</zmllist>
+	<div class="x12 text-center padding"><ul class="pagination border-red pagination-small">{$page}</ul></div>
+</div>
+</div>
+</div>
+<div class="clearfix"></div>
+<include file="Home@default/Public/foot" />
+<script>
+function add_bank(a){
+	layer.open({
+		type: 2,
+		title:'新增银行卡',
+		area: ['700px', '300px'],
+				fix: true, //不固定
+				maxmin: true,
+				content: '/User/Bank/bank_add'
+			});
+}
+</script>
+</body>
+</html>

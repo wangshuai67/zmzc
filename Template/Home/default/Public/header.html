@@ -1,0 +1,121 @@
+<style>
+
+.mynav li{width: 80px;height: 36px;line-height: 36px;float: left;text-align: center;margin-right: 5px;border-radius: 3px;position: relative;display: block;}
+
+.mynav .active{background-color: #ea544a;}
+
+.mynav .active a{color: #fff;}
+
+</style>
+
+<script type="text/javascript"> 
+
+var Sys = {};
+
+        var ua = navigator.userAgent.toLowerCase();
+
+        if (window.ActiveXObject){
+
+            Sys.ie = ua.match(/msie ([\d.]+)/)[1]
+
+            if (Sys.ie<=7){
+
+            alert('你目前的IE版本为'+Sys.ie+'版本太低，请升级！');location.href="http://windows.microsoft.com/zh-CN/internet-explorer/downloads/ie";
+
+            }
+
+        }
+
+</script> 
+
+<div class="x12 margin-big-bottom text-little padding-small bg-black text-pale" id="top">
+
+    <div class="container">
+
+        <span class="x2">欢迎来到<Zml:sitename />！</span>
+
+        <span class="x10 text-right text-pale"><if condition="session('user.uin')"><a href="{:U('User/Index/index')}" class="text-pale">{:session('user.phone')} 进入用户中心</a> | <a href="{:U('/User/Login/logout')}" class="text-pale">退出</a><else /></a><a href="{:U('User/Login/index')}" class="text-pale">登录</a> | <a href="{:U('User/Login/reg')}" class="text-pale">注册</a> </if></span>
+
+    </div>
+
+</div>
+
+<div class="container-layout  bg-white">
+
+    <div class="container padding-big-top padding-big-bottom">
+
+        <div class="x12">
+
+            <div class="x2">
+
+                <a href="/"><img src="<Zml:logo />" alt="<Zml:sitename />"  class="img-responsive"></a>
+
+            </div>
+
+            <div class="x10 padding-top">
+
+                <div class="x8">
+
+                    <ul class="mynav text-big float-right padding-big-right">
+
+                        <li <if condition="$Think.const.CONTROLLER_NAME eq 'Index'">class="active"</if>><a href="/">首页</a></li>
+
+                        <li <if condition="$Think.const.CONTROLLER_NAME eq 'Item'">class="active"</if>><a href="{:U('Home/Item/index')}">项目</a></li>
+
+                        <!--             <li><a href="#">动态</a></li> -->
+
+                        <li <if condition="$Think.const.CONTROLLER_NAME eq 'News'">class="active"</if>><a href="{:U('Home/News/index')}">新闻</a></li>
+
+                    </ul>
+
+                </div>
+
+                <div class="x4">
+
+                    <form id="form" action="{:U('Home/Item/index')}" method="get">
+
+                        <div class="input-group padding-little-top">
+                            <div class="field">
+
+                                <input type="text" class="input border-red" name="search" size="30" placeholder="项目名称"/>
+                            </div>
+
+                            <span class="addbtn"><button type="submit" class="button bg-red">搜!</button></span>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function select (){
+
+    var content = $('input[name="search"]');
+
+    if(content.val()==''){
+
+        layer.tips("请填写搜索内容！","#content",{
+
+            tips: 1
+
+        })
+
+        content.focus();
+
+        return false
+
+    } 
+    window.location.href="/index.php/Home/Item/index/search/"+content.val()
+}
+
+</script>

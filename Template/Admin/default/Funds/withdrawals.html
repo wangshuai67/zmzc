@@ -1,0 +1,95 @@
+<include file="Public/header" />
+<div class="x12 padding border-bottom">
+	<h1>提现管理</h1>
+</div>
+<div class="x12 padding">
+	<div class="x12 text-center padding-top padding-bottom border-bottom border-top margin-top">
+		<a href="{:U('Admin/Funds/withdrawals')}" class="x1 border-right <if condition="($_GET['status'] neq '0') AND ($_GET['status'] neq 1)"> text-red</if>">全部</a>
+		<a href="{:U('Admin/Funds/withdrawals',array('status'=>1))}" class="x1 border-right <if condition="$_GET['status'] eq 1">text-red</if>">成功</a>
+		<a href="{:U('Admin/Funds/withdrawals',array('status'=>0))}" class="x1 border-right <if condition="$_GET['status'] eq '0'">text-red</if>">未处理</a>
+		<span>未提现总额：{$sumMoney|default='0.00'}</span>
+	</div>
+</div>
+<div class="x12 padding">
+<table class="table table-bordered text-small table-striped">
+<tr>
+	<th>用户</th>
+	<th>银行名称</th>
+	<th>地区</th>
+	<th>姓名</th>
+	<th>卡号</th>
+	<th>金额</th>
+	<th>申请时间</th>
+	<th>处理时间</th>
+	<th>状态</th>
+</tr>
+<zmllist name="list" id="zml">
+
+<tr>
+	<td><a href="{:U('Admin/Funds/withdrawals',array('uin'=>$zml['uin']))}" class="text-sub">{$zml.user_info.name}</a></td>
+	<td>{$zml.bank_name}</td>
+	<td>{$zml.bank_area}</td>
+	<td>{$zml.name}</td>
+	<td>{$zml.card}</td>
+	<td>{$zml.money}</td>
+	<td>{$zml.create_time|date="Y-m-d h:i:s",###}</td>
+	<td><if condition="$zml['update_time']">{$zml.update_time|date="Y-m-d h:i:s",###}</if></td>
+	<td>
+		<if condition="$zml['status'] eq 1">
+			<span class="text-sub">成功</span>
+		<else />
+			<button class="withdrawals button border-dot button-small" sid="{$zml.id}" titleinfo="{$zml.name} {$zml.money}元">处理</button>
+		</if>
+	</td>
+</tr>
+</zmllist>
+</table>
+</div>
+<div class="x12 text-center padding"><ul class="pagination pagination-group border-red pagination-small">{$page}</ul></div>
+</div>
+</div>
+</div>
+<div class="clearfix"></div>
+<script type="text/javascript">
+$(function(){
+    $('.withdrawals').click(function(){
+        var sid = $(this).attr('sid');
+        parent.layer.confirm('确定要处理 '+ $(this).attr('titleinfo') +'的提现？', {icon: 3},function(){
+            parent.layer.prompt({
+                title: '输入转账交易单号',
+                formType: 0
+            }, function(orderid){
+                $.ajax({
+                    type: 'POST',
+                    url: '__SELF__',
+                    data:{
+                        id:sid,
+                        order_id:orderid
+                    },
+                    dataType: "json",
+
+                    success: function(data){
+                        if (data.status == 1) {
+                            parent.layer.msg(data.info, {
+                                shift: 2,
+                                time: 1000,
+                                shade: [0.1,'#000'],
+                                end: function(){
+                                    window.location.href = data.url;
+                                }
+                            });
+                        }else if (data.status == 0) {
+                            parent.layer.alert(data.info,{icon: 5});
+                        }else{
+                            parent.layer.alert('请求失败...',{icon: 2});
+                        }
+                    },
+                });
+
+            });
+        });
+    });
+})
+</script>
+</body>
+</html>

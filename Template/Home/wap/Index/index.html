@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <title><Zml:title /></title>
+    <meta name="keywords" content="<Zml:keywords />"/>
+    <meta name="description" content="<Zml:description />"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="__PUBLIC__/css/pintuer.css">
+    <link rel="stylesheet" href="__THEME__/default/css/zml.css">
+    <script src="__PUBLIC__/js/jquery-1.8.3.min.js"></script>
+    <script src="__PUBLIC__/js/pintuer.js"></script>
+    <script src="__PUBLIC__/js/respond.js"></script>
+    <script src="__PUBLIC__/js/TouchSlide.1.1.source.js"></script>
+    <script src="__PUBLIC__/lib/layer_m/layer.m.js"></script>
+</head>
+<body class="bg">
+    <div class="x12">
+        <!-- 引入头部文件 -->
+        <include file="Public/header" />
+        <!-- 幻灯开始 -->
+        <div class="x12 margin-big-bottom bg-white margin-top">
+            <div id="focus" class="focus">
+                <div class="hd">
+                    <ul></ul>
+                </div>
+                <div class="bd">
+                    <ul class="list-unstyle">
+                        <adlist type="1">
+                            <li><a href="{$zml.url}"><img _src="{:cut_image($zml['img'],320,120)}" src="{:cut_image($zml['img'],320,120)}" class="img-responsive"/></a></li>
+                        </adlist>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            TouchSlide({ 
+                slideCell:"#focus",
+                titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+                mainCell:".bd ul", 
+                effect:"left", 
+                autoPlay:true,//自动播放
+                autoPage:true, //自动分页
+                switchLoad:"_src" //切换加载，真实图片路径为"_src" 
+            });
+        </script>
+        <!-- 幻灯结束 -->
+        <!-- 项目列表 -->
+        <div class="x12 padding-small">
+            <span class="x3 bg-sub text-white padding-small text-center">预热...</span>
+            <hr class="bg-sub" style="margin:0"/>
+            <!-- 循环开始 -->
+            <itemlist end="1" status="1" num="10"  progress="1">
+                <div class="x12 bg-white padding margin-top">
+                    <span class="x12 margin-small-bottom">
+                        <h4>{$zml.name}</h4>
+                    </span>
+                    <a href="{$zml.url}">
+                        <img src="{:cut_image($zml['cover_img'],580,270)}" class="img-responsive"/>
+                    </a>
+                    <span class="x12 margin-top">
+                        <div class="progress progress-small progress-striped active">
+                            <div class="progress-bar bg-sub" style="width:50%;"></div>
+                        </div>
+                    </span>
+                    <span class="x12 margin-top text-small padding-bottom height">
+                        <span class="x3">
+                            <span class="x6">完成:</span>
+                            <span class="x6 text-red">90%</span>
+                        </span>
+                        <span class="x6">
+                            <span class="x4">目标:</span>
+                            <span class="x8 text-red">{$zml.raising_money}</span>
+                        </span>
+                        <span class="x3" style="margin-top:-6px">
+                            <a href="{$zml.url}" class="button button-small bg-dot fadein-right">支持</a>
+                        </span>
+                    </span>
+                </div>
+            </itemlist>
+            <!-- 循环结束 -->
+        </div>
+    </div>
+    <include file="Public/foot" />
+</body>
+</html>
